@@ -1,0 +1,18 @@
+---
+title: "test"
+author: "PB"
+date: "2023-03-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+a = rnorm(1000,1,1)
+`a = rnorm(1000,1,1)`
+`hist(a)`
+b = hist(a)
+
+```{r}
+plot(b)
+```
