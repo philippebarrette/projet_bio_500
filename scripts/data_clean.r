@@ -89,6 +89,7 @@ for (i in 1:nrow(collaboration)) {
 collaboration$etudiant1 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant1)
 collaboration$etudiant2 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant2)
 ###SYMBOLES
+install.packages("tidyverse")
 library(tidyverse)
 for(col in names(etudiants)){
   collaboration[,col] <- str_replace_all(collaboration[,col],pattern="\\s",replacement="")
@@ -164,7 +165,7 @@ etudiants$regime_coop <- gsub('FAUX', 'FALSE', etudiants$regime_coop)
 etudiants[etudiants==""] <- NA #rajouter des NA dans les cases vides
 
 ###SYMBOLES
-#installed.packages('tidyverse')
+installed.packages('tidyverse')
 library(tidyverse)
 for(col in names(etudiants)){
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="\\s",replacement="")
@@ -172,6 +173,8 @@ for(col in names(etudiants)){
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="ï¿½",replacement="")
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="???",replacement="")
 }
+
+#À CORRIGER
 for(i in 1:nrow(etudiants)){
 if (etudiants[i,1] <-etudiants[1:nrow(etudiants),1]){
   if(etudiants[i,5:8]== NA){
@@ -192,20 +195,24 @@ cours$optionnel <- gsub('FAUX', 'FALSE', cours$optionnel)
 cours[69,3][cours[69,3]=='2'] <- "1"   #changer la ligne 178 pour 1 credit
 cours[40,3][cours[40,3]=='1'] <- "2"   #changer la ligne 40 pour 2 credits
 
-for(i in 1:nrow(cours)){
- if(cours[i,1] == "BCL102"|"BCM104"|"BCM113"|"BCM115"|"BIO104"|"BIO108"|"BIO109"
-   |"BIO300"|"BIO402"|"BIO500"|"BOT106"|"BOT400"|"BOT512"|"ECL110"|"ECL307"|"ECL308"
-   |"ECL403"|"ECL404"|"ECL510"|"ECL515"|"ECL516"|"ECL527"|"ECL604"|"ECL610"
-   |"ECL611"|"ECL615"|"GNT302"|"MCB100"|"MCB101"|"PSL105"|"TSB302"|"ZOO105"
-   |"ZOO106"|"ZOO306"|"ZOO307"){
+cours_ob <- c("BCL102","BCM104","BCM113","BCM115","BIO104","BIO108","BIO109"
+,"BIO300","BIO402","BIO500","BOT106","BOT400","BOT512","ECL110","ECL307","ECL308"
+,"ECL403","ECL404","ECL510","ECL515","ECL516","ECL527","ECL604","ECL610"
+,"ECL611","ECL615","GNT302","MCB100","MCB101","PSL105","TSB302","ZOO105"
+,"ZOO106","ZOO306","ZOO307")
+
+liste_cours <- cours[,1]
+cours_opt <-liste_cours[!liste_cours %in% cours_ob]
+for(i in 0:nrow(cours)){
+ if(i %in% cours_ob){
    cours[i,2]=="FALSE"
-}
-   else{ cours[i,2]=="TRUE"
   }
 }
- 
-
-
+for(i in 0:nrow(cours)){
+  if(i %in% cours_opt){
+    cours[i,2]=="TRUE"
+  }
+}
 
 
 
