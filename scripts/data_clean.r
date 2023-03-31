@@ -174,20 +174,14 @@ for(col in names(etudiants)){
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="???",replacement="")
 }
 
-#À CORRIGER
+####ENLEVER DOUBLONS
+etudiants_sans_doublons <- data.frame(colnames(etudiants))
 for(i in 1:nrow(etudiants)){
-if (etudiants[i,1] <-etudiants[1:nrow(etudiants),1]){
-  if(etudiants[i,5:8]== NA){
-    etudiants[i,5:8] <- etudiants[i,5:8](where(etudiants[i,5:8]!= NA))
-    }
+if (etudiants[i,1] <-etudiants_sans_doublons[1:nrow(etudiants_sans_doublons),1]){
+  }
+  else(etudiants_sans_doublons[1:nrow(etudiants_sans_doublons,1)]<-etudiants[i,1]){
   }
 }
-
-}
-
-####ENLEVER DOUBLONS
-for(i in 1:nrow(etudiants)){
-  if
 
   #CORRECTION DE LA TABLE DE COURS
 cours$optionnel <- gsub('VRAI', 'TRUE', cours$optionnel)
