@@ -262,7 +262,7 @@ collaboration$etudiant1 <- gsub('sara_jade_lamontagne', 'sara-jade_lamontagne', 
 collaboration$etudiant1 <- gsub('philippe_leonard_dufour', 'philippe_leonard-dufour', collaboration$etudiant1)
 collaboration$etudiant1 <- gsub('philippe_bourrassa', 'philippe_bourassa', collaboration$etudiant1)
 
-##changement dans étudiants par DB
+##changement dans etudiants par DB
 etudiants$prenom_nom <- gsub('sabrina_leclercqq', 'sabrina_leclercq', etudiants$prenom_nom)
 etudiants$nom <- gsub('leclercqq', 'leclercq', etudiants$nom)
 etudiants$prenom_nom <- gsub('sara_jade_lamontagne', 'sara-jade_lamontagne', etudiants$prenom_nom)
