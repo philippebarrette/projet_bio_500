@@ -208,8 +208,67 @@ for(i in 0:nrow(cours)){
   }
 }
 
+##Correction de la table collaboration (générateur d'erreurs##
+ref_nom <- etudiants$prenom_nom
+nom_ver <- collaboration$etudiant1
+correction <-sapply(nom_ver, function(x) x %in% ref_nom)
+noms_incorrects <- nom_ver[which(!correction)]
+print(noms_incorrects)
+print(correction)
+##correction tableau collaboration par DB
+collaboration$etudiant1 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('savier_samson', 'xavier_samson', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('philippe_leonard-dufour', 'philippe_leonard_dufour', collaboration$etudiant1)
+nouvelleligne <- c( 'eloise_bernier', 'eloise', 'bernier', NA,NA,NA,NA,NA)
+etudiants <- rbind(etudiants,nouvelleligne)
+collaboration$etudiant1 <- gsub('peneloppe_robert', 'penelope_robert', collaboration$etudiant1)
+nouvelleligne1 <- c( 'naomie_morin', 'naomie', 'morin', NA,NA,NA,NA,NA)
+etudiants <- rbind(etudiants,nouvelleligne1)
+nouvelleligne2 <- c( 'karim_hamzaoui', 'karim', 'hamzaoui', NA,NA,NA,NA,NA)
+etudiants <- rbind(etudiants,nouvelleligne2)
+collaboration$etudiant1 <- gsub('louis-phillippe_theriault', 'louis-philippe_theriault', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('phillippe_bourassa', 'philippe_bourassa', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('justine_lebelle', 'justine_labelle', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('frederick_laberge', 'frederic_laberge', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('marie_christine_arseneau', 'marie-christine_arseneau', collaboration$etudiant1)
+nouvelleligne3 <- c( 'gabrielle_moreault', 'gabrielle', 'moreault', NA,NA,NA,NA,NA)
+etudiants <- rbind(etudiants,nouvelleligne3)
+collaboration$etudiant1 <- gsub('catherine_viel_lapointe', 'catherine_viel-lapointe', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('laurie_anne_cournoyer', 'laurie-anne_cournoyer', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('margerite_duchesne', 'marguerite_duchesne', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('eve\xa0_dandonneau', 'eve_dandonneau', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('juliette_meilleur\xa0', 'juliette_meilleur', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('mia_carriere\xa0', 'mia_carriere', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('mael_guerin', 'mael_gerin', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('catherine_viel_lapointe', 'catherine_viel-lapointe', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('cassandra_gobin', 'cassandra_godin', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('louis_philippe_raymond', 'louis-philippe_raymond', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('audrey_ann_jobin', 'audrey-ann_jobin', collaboration$etudiant1)
+nouvelleligne4 <- c( 'maxence_comyn', 'maxence', 'comyn', NA,NA,NA,NA,NA)
+etudiants <- rbind(etudiants,nouvelleligne4)
+collaboration$etudiant1 <- gsub('raphael_charlesbois', 'raphael_charlebois', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('jonathan_rondeau_leclaire', 'jonathan_rondeau-leclaire', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('francis_bourrassa', 'francis_bourassa', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('noemie_perrier-mallette', 'noemie_perrier-malette', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('francis_bolly', 'francis_boily', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('amelie_harbeck_bastien', 'amelie_harbeck-bastien', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('marie_burghin', 'marie_bughin', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('arianne_barette', 'ariane_barrette', collaboration$etudiant1)
+nouvelleligne5 <- c( 'maude_viens', 'maude', 'viens', NA,NA,NA,NA,NA)
+etudiants <- rbind(etudiants,nouvelleligne5)
+collaboration$etudiant1 <- gsub('sabrica_leclercq', 'sabrina_leclercq', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('yanick_sagneau', 'yanick_sageau', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('sara_jade_lamontagne', 'sara-jade_lamontagne', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('philippe_leonard_dufour', 'philippe_leonard-dufour', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('philippe_bourrassa', 'philippe_bourassa', collaboration$etudiant1)
 
-
-
-
+##changement dans étudiants par DB
+etudiants$prenom_nom <- gsub('sabrina_leclercqq', 'sabrina_leclercq', etudiants$prenom_nom)
+etudiants$nom <- gsub('leclercqq', 'leclercq', etudiants$nom)
+etudiants$prenom_nom <- gsub('sara_jade_lamontagne', 'sara-jade_lamontagne', etudiants$prenom_nom)
+etudiants$prenom <- gsub('sara_jade', 'sara-jade', etudiants$prenom)
+etudiants$prenom_nom <- gsub('sara-jade_lamontagne"', 'sara-jade_lamontagne', etudiants$prenom_nom)
+etudiants$prenom <- gsub('lamontagne', 'sara-jade', etudiants$prenom)
+etudiants$prenom <- gsub('pion', 'sarah', etudiants$prenom)
+etudiants$prenom <- gsub('bovin', 'sarah-maude', etudiants$prenom)
 
