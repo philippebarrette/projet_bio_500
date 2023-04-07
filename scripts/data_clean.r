@@ -286,6 +286,7 @@ for(input in 1:nrow(etudiants_intermediaire)){
     }
 }
 
+
 ##Correction de la table collaboration (générateur d'erreurs##
 ref_nom <- etudiants$prenom_nom
 nom_ver <- collaboration$etudiant1
@@ -340,8 +341,7 @@ collaboration$etudiant1 <- gsub('sara_jade_lamontagne', 'sara-jade_lamontagne', 
 collaboration$etudiant1 <- gsub('philippe_leonard_dufour', 'philippe_leonard-dufour', collaboration$etudiant1)
 collaboration$etudiant1 <- gsub('philippe_bourrassa', 'philippe_bourassa', collaboration$etudiant1)
 
-<<<<<<< HEAD
-=======
+########## HEAD
 ##changement dans etudiants par DB
 etudiants$prenom_nom <- gsub('sabrina_leclercqq', 'sabrina_leclercq', etudiants$prenom_nom)
 etudiants$nom <- gsub('leclercqq', 'leclercq', etudiants$nom)
@@ -352,4 +352,4 @@ etudiants$prenom <- gsub('lamontagne', 'sara-jade', etudiants$prenom)
 etudiants$prenom <- gsub('pion', 'sarah', etudiants$prenom)
 etudiants$prenom <- gsub('bovin', 'sarah-maude', etudiants$prenom)
 
->>>>>>> aafe39668a5d006e187e3762bb89000bc5ed5082
+##############aafe39668a5d006e187e3762bb89000bc5ed5082
