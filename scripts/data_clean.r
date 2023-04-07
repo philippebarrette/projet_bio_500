@@ -204,7 +204,7 @@ etudiants[etudiants==""] <- NA #rajouter des NA dans les cases vides
 ###SYMBOLES
 installed.packages('tidyverse')
 library(tidyverse)
-for(col in names(etudiants)){
+#for(col in names(etudiants)){
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="\\s",replacement="")
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="<a0>",replacement="")
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="ï¿½",replacement="")
@@ -341,6 +341,21 @@ collaboration$etudiant1 <- gsub('sara_jade_lamontagne', 'sara_jade_lamontagne', 
 collaboration$etudiant1 <- gsub('philippe_leonard_dufour', 'philippe_leonard-dufour', collaboration$etudiant1)
 collaboration$etudiant1 <- gsub('philippe_bourrassa', 'philippe_bourassa', collaboration$etudiant1)
 
+collaboration$etudiant2 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('louis-phillippe_theriault', 'louis-philippe_theriault', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('phillippe_bourassa', 'philippe_bourassa', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('justine_lebelle', 'justine_labelle', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('marie_eve_gagne', 'marie-eve_gagne', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('philippe_leonard_dufour', 'philippe_leonard-dufour', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('catherine_viel_lapointe', 'catherine_viel-lapointe', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('marie_christine_arseneau', 'marie-christine_arseneau', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('laurie_anne_cournoyer', 'laurie-anne_cournoyer', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('louis_philippe_raymond', 'louis-philippe_raymond', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('jonathan_rondeau_leclaire', 'jonathan_rondeau-leclaire', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('ihuoma_elsie-ebere', 'ihuoma_elsie_ebere', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('amelie_harbeck_bastien', 'amelie_harbeck-bastien', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('francis_bolly', 'francis_boily', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', collaboration$etudiant2)
 ##En post-traitement sur R :
 #Créer la base de données
 #Injecter les données
@@ -352,18 +367,22 @@ collaboration$etudiant1 <- gsub('philippe_bourrassa', 'philippe_bourassa', colla
 #Calculer le nombre de liens moyens par étudiant et la variance
 #Écrire un script qui réalise les étapes 0-3 d'un bloc
 
+###Enregistrer en CSV les tables corrigees
 
-
+write_csv(collaboration, "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_500/data/tbl_collaborations.csv")
+write_csv(etudiants_final, "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_500/data/tbl_etudiants.csv")
+write_csv(cours_final, "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_500/data/tbl_cours.csv")
+  
 library(RSQLite)
-con <- dbConnect(SQLite(), dbname="directory")
+con <- dbConnect(SQLite(), dbname="data_directory")
 tbl_cours <- "
 CREATE TABLE COURS (
   sigle         VARCHAR(6),
   optionnel     BOLEAN,
-  crédits       INTEGER,
+  credits       INTEGER,
   PRIMARY KEY (cours)
 );"
-dbSendQuery(con, cours)
+dbSendQuery(con, tbl_cours)
 
 tbl_etudiants <- "
 CREATE TABLE ETUDIANTS (
@@ -377,7 +396,7 @@ CREATE TABLE ETUDIANTS (
   programme                     INTEGER,
   PRIMARY KEY (prenom_nom)
 );"
-dbSendQuery(con, etudiants)
+dbSendQuery(con, tbl_etudiants)
 
 tbl_collaborations <- "
 CREATE TABLE collaborations (
@@ -386,9 +405,24 @@ CREATE TABLE collaborations (
   sigle        VARCHAR(6),
   PRIMARY KEY (etudiant1,etudiant2)
 );"
-dbSendQuery(con, collaborations)
+dbSendQuery(con, tbl_collaborations)
 
-SQL_tbl_cours <- dbWriteTable(con, append = TRUE, name = "cours", value = tbl_cours, row.names = FALSE)
-SQL_tbl_etudiants <-dbWriteTable(con, append = TRUE, name = "etudiants", value = tbl_etudiants, row.names = FALSE)
-SQL_tbl_collaborations <-dbWriteTable(con, append = TRUE, name = "collaborations", value = tbl_collaborations, row.names = FALSE)
+bd_collaborations  <-read.csv(file=  "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_500/data/tbl_collaborations.csv")
+bd_etudiants  <-read.csv(file=  "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_500/data/tbl_etudiants.csv")
+bd_cours  <-read.csv(file= "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_500/data/tbl_cours.csv")
 
+SQL_tbl_cours <- dbWriteTable(con, append = TRUE, name = "cours", value = bd_cours, row.names = FALSE)
+SQL_tbl_etudiants <-dbWriteTable(con, append = TRUE, name = "etudiants", value = bd_etudiants, row.names = FALSE)
+SQL_tbl_collaborations <-dbWriteTable(con, append = TRUE, name = "collaborations", value = bd_collaborations, row.names = FALSE)
+
+library(RSQLite)
+rsqliteVersion()
+RSQLite::dbConnect()
+connexion<-dbConnect(RSQLite::SQLite(), dbname = "tbl_collaboration")
+
+sql_requete <- "
+SELECT sigle, optionnel, credits
+  FROM COURS
+;"
+cours_test <- dbGetQuery(con, sql_requete)
+head(cours_test)
