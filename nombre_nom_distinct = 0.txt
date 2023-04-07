@@ -1,0 +1,13 @@
+nb_nom_distinct = 0
+loop sur les entrees
+	flag = true
+		
+	loop sur tableau propre
+		if{nom_tableau_p = nom_tab_sale
+			flag = false
+			loop sur les colonnes
+				if{info est NA ou vide
+					overwrite colonne tableau_p
+	if{ flag = true
+		nom_tableau_p[nombre_nom_distinct+1,] = nom_tab_sale[i,]
+		nb_nom_distcint = nb_nom_distcint +1
