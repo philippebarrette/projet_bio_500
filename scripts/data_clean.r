@@ -235,8 +235,7 @@ cours_ob <- c("BCL102","BCM104","BCM113","BCM115","BIO104","BIO108","BIO109"
 liste_cours <- cours[,1]
 cours_opt <-liste_cours[!liste_cours %in% cours_ob]
 
-cours_final <-data.frame(colnames(cours))
-cours_final <-setNames(cours_final(c("sigle","optionnel","credits")))
+colnames(cours_final) <-c("sigle","optionnel","credits")
 for(i in 1:nrow(cours)){
   cours_final[i,1]<-cours[i,1]
   cours_final[i,2]<-cours[i,2]
@@ -376,7 +375,7 @@ write_csv(cours_final, "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_
 library(RSQLite)
 con <- dbConnect(SQLite(), dbname="data_directory")
 tbl_cours <- "
-CREATE TABLE COURS (
+CREATE TABLE cours (
   sigle         VARCHAR(6),
   optionnel     BOLEAN,
   credits       INTEGER,
@@ -422,7 +421,11 @@ connexion<-dbConnect(RSQLite::SQLite(), dbname = "tbl_collaboration")
 
 sql_requete <- "
 SELECT sigle, optionnel, credits
-  FROM COURS
+  FROM cours
 ;"
 cours_test <- dbGetQuery(con, sql_requete)
 head(cours_test)
+
+#Question recherche possible: cest quoi la proportion de collaboration réalisée en dehors du bac en ecologie
+#Est ce que certain etudiants occupe plus de place dans reseau de collaboration
+#Est ce que les collaboration sont plus importantes chez les etudiants dun meme programme qu'en dehors des cours obligatoires
