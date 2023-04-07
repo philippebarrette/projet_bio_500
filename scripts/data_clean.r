@@ -429,3 +429,27 @@ head(cours_test)
 #Question recherche possible: cest quoi la proportion de collaboration réalisée en dehors du bac en ecologie
 #Est ce que certain etudiants occupe plus de place dans reseau de collaboration
 #Est ce que les collaboration sont plus importantes chez les etudiants dun meme programme qu'en dehors des cours obligatoires
+
+##Correction de la table collaboration (gÃ©nÃ©rateur d'erreurs##
+ref_nom <- etudiants_final$prenom_nom
+nom_ver <- collaboration$etudiant2
+correction <-sapply(nom_ver, function(x) x %in% ref_nom)
+noms_incorrects <- nom_ver[which(!correction)]
+print(noms_incorrects)
+print(correction) 
+
+collaboration$etudiant2 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('louis-phillippe_theriault', 'louis-philippe_theriault', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('phillippe_bourassa', 'philippe_bourassa', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('justine_lebelle', 'justine_labelle', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('marie_eve_gagne', 'marie-eve_gagne', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('philippe_leonard_dufour', 'philippe_leonard-dufour', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('catherine_viel_lapointe', 'catherine_viel-lapointe', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('marie_christine_arseneau', 'marie-christine_arseneau', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('laurie_anne_cournoyer', 'laurie-anne_cournoyer', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('louis_philippe_raymond', 'louis-philippe_raymond', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('jonathan_rondeau_leclaire', 'jonathan_rondeau-leclaire', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('ihuoma_elsie-ebere', 'ihuoma_elsie_ebere', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('amelie_harbeck_bastien', 'amelie_harbeck-bastien', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('francis_bolly', 'francis_boily', collaboration$etudiant2)
+collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', collaboration$etudiant2)
