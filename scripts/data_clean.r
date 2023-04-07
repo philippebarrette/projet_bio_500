@@ -11,7 +11,7 @@ data_directory <- gsub("/scripts", "/data/",directory)
 getwd()
 file.path()
 
-#PACKsAGES
+#PACKAGES
 library(RSQLite)
 #library(RSQLite, dependencies= TRUE)
 
@@ -286,9 +286,8 @@ for(input in 1:nrow(etudiants_intermediaire)){
     }
 }
 
-
 ##Correction de la table collaboration (gÃ©nÃ©rateur d'erreurs##
-ref_nom <- etudiants$prenom_nom
+ref_nom <- etudiants_final$prenom_nom
 nom_ver <- collaboration$etudiant1
 correction <-sapply(nom_ver, function(x) x %in% ref_nom)
 noms_incorrects <- nom_ver[which(!correction)]
@@ -337,19 +336,59 @@ nouvelleligne5 <- c( 'maude_viens', 'maude', 'viens', NA,NA,NA,NA,NA)
 etudiants <- rbind(etudiants,nouvelleligne5)
 collaboration$etudiant1 <- gsub('sabrica_leclercq', 'sabrina_leclercq', collaboration$etudiant1)
 collaboration$etudiant1 <- gsub('yanick_sagneau', 'yanick_sageau', collaboration$etudiant1)
-collaboration$etudiant1 <- gsub('sara_jade_lamontagne', 'sara-jade_lamontagne', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', collaboration$etudiant1)
+collaboration$etudiant1 <- gsub('sara_jade_lamontagne', 'sara_jade_lamontagne', collaboration$etudiant1)
 collaboration$etudiant1 <- gsub('philippe_leonard_dufour', 'philippe_leonard-dufour', collaboration$etudiant1)
 collaboration$etudiant1 <- gsub('philippe_bourrassa', 'philippe_bourassa', collaboration$etudiant1)
 
-########## HEAD
-##changement dans etudiants par DB
-etudiants$prenom_nom <- gsub('sabrina_leclercqq', 'sabrina_leclercq', etudiants$prenom_nom)
-etudiants$nom <- gsub('leclercqq', 'leclercq', etudiants$nom)
-etudiants$prenom_nom <- gsub('sara_jade_lamontagne', 'sara-jade_lamontagne', etudiants$prenom_nom)
-etudiants$prenom <- gsub('sara_jade', 'sara-jade', etudiants$prenom)
-etudiants$prenom_nom <- gsub('sara-jade_lamontagne"', 'sara-jade_lamontagne', etudiants$prenom_nom)
-etudiants$prenom <- gsub('lamontagne', 'sara-jade', etudiants$prenom)
-etudiants$prenom <- gsub('pion', 'sarah', etudiants$prenom)
-etudiants$prenom <- gsub('bovin', 'sarah-maude', etudiants$prenom)
+##En post-traitement sur R :
+#Créer la base de données
+#Injecter les données
+#Faire les requêtes suivantes :
+## Nombre de liens par étudiant
+#Décompte de liens par paire d'étudiants
+#Enregistrer le résultat des requêtes dans un fichier csv
+#Calculer le nombre d'étudiants, le nombre de liens et la connectance du réseau
+#Calculer le nombre de liens moyens par étudiant et la variance
+#Écrire un script qui réalise les étapes 0-3 d'un bloc
 
-##############aafe39668a5d006e187e3762bb89000bc5ed5082
+
+
+library(RSQLite)
+con <- dbConnect(SQLite(), dbname="directory")
+tbl_cours <- "
+CREATE TABLE COURS (
+  sigle         VARCHAR(6),
+  optionnel     BOLEAN,
+  crédits       INTEGER,
+  PRIMARY KEY (cours)
+);"
+dbSendQuery(con, cours)
+
+tbl_etudiants <- "
+CREATE TABLE ETUDIANTS (
+  prenom_nom                  VARCHAR(50),
+  prenom                      VARCHAR(40),
+  nom                          VARCHAR(200),
+  region_adminisatrative       VARCHAR(40),
+  regime_coop                   BOLEAN,
+  formation_prealable           VARCHAR(40),
+  annee_debut                   VARCHAR(5),
+  programme                     INTEGER,
+  PRIMARY KEY (prenom_nom)
+);"
+dbSendQuery(con, etudiants)
+
+tbl_collaborations <- "
+CREATE TABLE collaborations (
+  etudiant1      VARCHAR(50),
+  etudiant2      VARCHAR(40),
+  sigle        VARCHAR(6),
+  PRIMARY KEY (etudiant1,etudiant2)
+);"
+dbSendQuery(con, collaborations)
+
+SQL_tbl_cours <- dbWriteTable(con, append = TRUE, name = "cours", value = tbl_cours, row.names = FALSE)
+SQL_tbl_etudiants <-dbWriteTable(con, append = TRUE, name = "etudiants", value = tbl_etudiants, row.names = FALSE)
+SQL_tbl_collaborations <-dbWriteTable(con, append = TRUE, name = "collaborations", value = tbl_collaborations, row.names = FALSE)
+
