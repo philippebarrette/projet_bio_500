@@ -440,8 +440,8 @@ head(cours_test)
 #Est ce que les collaboration sont plus importantes chez les etudiants dun meme programme qu'en dehors des cours obligatoires
 
 ##Package a utilisé pour écrire le rapport final 
-install.packages('rticles')
-library(rticles)
+#install.packages('rticles')
+#library(rticles)
 
 
 
