@@ -443,7 +443,19 @@ head(cours_test)
 #install.packages('rticles')
 #library(rticles)
 
-
+##Retirer les doublons dans les 3 fichiers csv
+unique(cours)
+cours[!duplicated(cours), ]
+unique(etudiants)
+etudiants[!duplicated(etudiants), ]
+unique(collaboration)
+collaboration[!duplicated(collaboration), ]
+##Retirer les duplicata nayant pas les informations (NA)
+#install.packages('dplyr')
+etudiants[duplicated(etudiants), ]
+library(dplyr)
+###etudiantsf <- etudiants %>% slice(-77)
+etudiants <- etudiants[-77,]
 
 
 
