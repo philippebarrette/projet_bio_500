@@ -210,19 +210,12 @@ etudiants[etudiants==""] <- NA #rajouter des NA dans les cases vides
 installed.packages('tidyverse')
 library(tidyverse)
 library(dplyr)
-for(col in names(etudiants)){
-  etudiants[,col] <- str_replace_all(etudiants[,col],pattern="\\s",replacement="")
-  etudiants[,col] <- str_replace_all(etudiants[,col],pattern="<a0>",replacement="")
-  etudiants[,col] <- str_replace_all(etudiants[,col],pattern="�",replacement="")
-  etudiants[,col] <- str_replace_all(etudiants[,col],pattern="???",replacement="")
-}
 
-#for(col in names(etudiants)){
+for(col in names(etudiants)){
   etudiants[,col] <- str_replace_all(pattern="\\s",etudiants[,col],replacement="")
   etudiants[,col] <- str_replace_all(pattern="<a0>",etudiants[,col],replacement="")
   etudiants[,col] <- str_replace_all(pattern="�",etudiants[,col],replacement="")
-  etudiants[,col] <- str_replace_all(pattern="???",etudiants[,col],replacement="")
-  }
+}
 #
 ###ENLEVER DOUBLONS
 #etudiants_sans_doublons <- data.frame(colnames(etudiants))
@@ -296,6 +289,15 @@ for(input in 1:nrow(etudiants_intermediaire)){
       etudiants_final[nb_nom_distinct+1,]<- etudiants_intermediaire[input,]
       nb_nom_distinct <- nb_nom_distinct+1
     }
+}
+
+for(rows in names(etudiants_intermediaire)){
+  etudiants_intermediaire[153,1] <- "eve_dandonneau"
+  etudiants_intermediaire[163,1] <- "juliette_meilleur"
+  etudiants_intermediaire[174,1] <- "mia_carriere"
+  etudiants_intermediaire[153,3] <- "dandonneau"
+  etudiants_intermediaire[163,3] <- "meilleur"
+  etudiants_intermediaire[174,3] <- "carriere"
 }
 
 ##Correction de la table collaboration (générateur d'erreurs##
@@ -509,8 +511,3 @@ etudiants[duplicated(etudiants), ]
 library(dplyr)
 ###etudiantsf <- etudiants %>% slice(-77)
 etudiants <- etudiants[-77,]
-
-
-
-
-
