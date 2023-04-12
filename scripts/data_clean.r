@@ -7,7 +7,9 @@
 print(utils::getSrcDirectory(function(){}))
 print(utils::getSrcFilename(function(){}, full.names = TRUE))
 directory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-name_tbl_collab <-paste(data_directory,"tbl_collaborations.csv",sep="")
+data_directory <- gsub("/scripts", "/data/",directory)
+name_tbl_collab <-padata_directory <- gsub("/scripts", "/data/",directory)
+ste(data_directory,"tbl_collaborations.csv",sep="")
 name_tbl_cours<-paste(data_directory,"tbl_cours.csv",sep="")
 name_tbl_etudiants<-paste(data_directory,"tbl_etudiants.csv",sep="")
   
@@ -375,6 +377,8 @@ collaboration$etudiant2 <- gsub('ihuoma_elsie-ebere', 'ihuoma_elsie_ebere', coll
 collaboration$etudiant2 <- gsub('amelie_harbeck_bastien', 'amelie_harbeck-bastien', collaboration$etudiant2)
 collaboration$etudiant2 <- gsub('francis_bolly', 'francis_boily', collaboration$etudiant2)
 collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', collaboration$etudiant2)
+
+
 ##En post-traitement sur R :
 #Créer la base de données
 #Injecter les données
@@ -385,6 +389,40 @@ collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', 
 #Calculer le nombre d'étudiants, le nombre de liens et la connectance du réseau
 #Calculer le nombre de liens moyens par étudiant et la variance
 #Écrire un script qui réalise les étapes 0-3 d'un bloc
+
+nb_lien_etudiants <- "
+SELECT etudiant1,count(etudiant2) AS nb_lien_par_etudiants
+FROM collaborations
+GROUP BY etudiant1
+ORDER BY nb_lien_par_etudiants
+;"
+nombre_liens_etudiants <- dbGetQuery(con, nb_lien_etudiants)
+head(nombre_liens_etudiants)
+
+nb_lien_etudiants2 <- "
+SELECT etudiant1,COUNT(*) AS nb_lien_par_etudiants
+FROM collaborations
+GROUP BY etudiant1
+ORDER BY nb_lien_par_etudiants
+;"
+nombre_liens_etudiants2 <- dbGetQuery(con, nb_lien_etudiants2)
+head(nombre_liens_etudiants2)
+
+nb_lien_paire_etudiants <- "
+SELECT etudiant1,etudiant2 AS nb_lien_paire_etudiants
+FROM collaborations
+INNER JOIN collaborations ON etudiant1=etudiant2 
+
+ORDER BY nb_lien_par_etudiants
+;"
+nombre_liens_par_paire_etudiants <- dbGetQuery(con,nb_lien_paire_etudiants)
+head(nb_lien_paire_etudiants)
+
+
+
+
+
+
 
 ###Enregistrer en CSV les tables corrigees
 #set
@@ -428,9 +466,6 @@ CREATE TABLE collaborations (
   PRIMARY KEY (etudiant1,etudiant2)
 );"
 dbSendQuery(con, tbl_collaborations)
-<<<<<<< HEAD
-#faire setwd() avec le directory 
-=======
 
 bd_collaborations  <-read.csv(file=name_tbl_collab)
 bd_etudiants  <-read.csv(file=name_tbl_etudiants)
