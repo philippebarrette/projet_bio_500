@@ -7,7 +7,10 @@
 print(utils::getSrcDirectory(function(){}))
 print(utils::getSrcFilename(function(){}, full.names = TRUE))
 directory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-data_directory <- gsub("/scripts", "/data/",directory)
+name_tbl_collab <-paste(data_directory,"tbl_collaborations.csv",sep="")
+name_tbl_cours<-paste(data_directory,"tbl_cours.csv",sep="")
+name_tbl_etudiants<-paste(data_directory,"tbl_etudiants.csv",sep="")
+  
 getwd()
 file.path()
 
@@ -406,9 +409,9 @@ CREATE TABLE collaborations (
 );"
 dbSendQuery(con, tbl_collaborations)
 
-bd_collaborations  <-read.csv(file=  "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_500/data/tbl_collaborations.csv")
-bd_etudiants  <-read.csv(file=  "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_500/data/tbl_etudiants.csv")
-bd_cours  <-read.csv(file= "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_500/data/tbl_cours.csv")
+bd_collaborations  <-read.csv(file=name_tbl_collab)
+bd_etudiants  <-read.csv(file=name_tbl_cours  )
+bd_cours  <-read.csv(file=name_tbl_etudiants)
 
 SQL_tbl_cours <- dbWriteTable(con, append = TRUE, name = "cours", value = bd_cours, row.names = FALSE)
 SQL_tbl_etudiants <-dbWriteTable(con, append = TRUE, name = "etudiants", value = bd_etudiants, row.names = FALSE)
