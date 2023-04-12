@@ -205,8 +205,9 @@ etudiants$regime_coop <- gsub('FAUX', 'FALSE', etudiants$regime_coop)
 etudiants[etudiants==""] <- NA #rajouter des NA dans les cases vides
 
 ###SYMBOLES
-#installed.packages('tidyverse')
+installed.packages('tidyverse')
 library(tidyverse)
+library(dplyr)
 for(col in names(etudiants)){
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="\\s",replacement="")
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="<a0>",replacement="")
@@ -214,7 +215,14 @@ for(col in names(etudiants)){
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="???",replacement="")
 }
 
-####ENLEVER DOUBLONS
+#for(col in names(etudiants)){
+  etudiants[,col] <- str_replace_all(pattern="\\s",etudiants[,col],replacement="")
+  etudiants[,col] <- str_replace_all(pattern="<a0>",etudiants[,col],replacement="")
+  etudiants[,col] <- str_replace_all(pattern="�",etudiants[,col],replacement="")
+  etudiants[,col] <- str_replace_all(pattern="???",etudiants[,col],replacement="")
+  }
+#
+###ENLEVER DOUBLONS
 #etudiants_sans_doublons <- data.frame(colnames(etudiants))
 #for(i in 1:nrow(etudiants)){
 #if (etudiants[i,1] <-etudiants_sans_doublons[1:nrow(etudiants_sans_doublons),1]){
@@ -389,10 +397,13 @@ con <- dbConnect(SQLite(), dbname="data_directory")
 tbl_cours <- "
 CREATE TABLE cours (
   sigle         VARCHAR(6),
-  optionnel     BOLEAN,
-  credits       INTEGER,
+  optionnel     VARCHAR(5),
+  credits       VARCHAR(1),
   PRIMARY KEY (cours)
 );"
+
+dbSendQuery(con,"DROP TABLE cours;")
+
 dbSendQuery(con, tbl_cours)
 
 tbl_etudiants <- "
@@ -418,16 +429,12 @@ CREATE TABLE collaborations (
 );"
 dbSendQuery(con, tbl_collaborations)
 <<<<<<< HEAD
+#faire setwd() avec le directory 
+=======
 
 bd_collaborations  <-read.csv(file=name_tbl_collab)
-bd_etudiants  <-read.csv(file=name_tbl_cours  )
-bd_cours  <-read.csv(file=name_tbl_etudiants)
-=======
-#faire setwd() avec le directory 
-bd_collaborations  <-read.csv(file=  "data/tbl_collaborations.csv")
-bd_etudiants  <-read.csv(file=  "data/tbl_etudiants.csv")
-bd_cours  <-read.csv(file= "data/tbl_cours.csv")
->>>>>>> 802d511b7e4a9f0220429f5bf19ad1f1b7de201a
+bd_etudiants  <-read.csv(file=name_tbl_etudiants)
+bd_cours  <-read.csv(file=name_tbl_cours)
 
 SQL_tbl_cours <- dbWriteTable(con, append = TRUE, name = "cours", value = bd_cours, row.names = FALSE)
 SQL_tbl_etudiants <-dbWriteTable(con, append = TRUE, name = "etudiants", value = bd_etudiants, row.names = FALSE)
@@ -460,6 +467,7 @@ unique(etudiants)
 etudiants[!duplicated(etudiants), ]
 unique(collaboration)
 collaboration[!duplicated(collaboration), ]
+
 ##Retirer les duplicata nayant pas les informations (NA)
 #install.packages('dplyr')
 etudiants[duplicated(etudiants), ]
