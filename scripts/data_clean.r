@@ -92,15 +92,15 @@ for (i in 1:nrow(collaboration)) {
 collaboration$etudiant1 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant1)
 collaboration$etudiant2 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant2)
 ###SYMBOLES
-install.packages("tidyverse")
+#install.packages("tidyverse")
 library(tidyverse)
-for(col in names(etudiants)){
+for(col in names(collaboration)){
   collaboration[,col] <- str_replace_all(collaboration[,col],pattern="\\s",replacement="")
 }
-for(col in names(etudiants)){
+for(col in names(collaboration)){
   collaboration[,col] <- str_replace_all(collaboration[,col],pattern="<a0>",replacement="")
 }
-for(col in names(etudiants)){
+for(col in names(collaboration)){
   collaboration[,col] <- str_replace_all(collaboration[,col],pattern="ï¿½",replacement="")
 }
 
@@ -205,9 +205,9 @@ etudiants$regime_coop <- gsub('FAUX', 'FALSE', etudiants$regime_coop)
 etudiants[etudiants==""] <- NA #rajouter des NA dans les cases vides
 
 ###SYMBOLES
-installed.packages('tidyverse')
+#installed.packages('tidyverse')
 library(tidyverse)
-#for(col in names(etudiants)){
+for(col in names(etudiants)){
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="\\s",replacement="")
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="<a0>",replacement="")
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="ï¿½",replacement="")
@@ -343,6 +343,15 @@ collaboration$etudiant1 <- gsub('sara_jade_lamontagne', 'sara_jade_lamontagne', 
 collaboration$etudiant1 <- gsub('philippe_leonard_dufour', 'philippe_leonard-dufour', collaboration$etudiant1)
 collaboration$etudiant1 <- gsub('philippe_bourrassa', 'philippe_bourassa', collaboration$etudiant1)
 
+##Correction de la table collaboration (gÃ©nÃ©rateur d'erreurs##
+ref_nom <- etudiants_final$prenom_nom
+nom_ver <- collaboration$etudiant2
+correction <-sapply(nom_ver, function(x) x %in% ref_nom)
+noms_incorrects <- nom_ver[which(!correction)]
+print(noms_incorrects)
+print(correction) 
+
+
 collaboration$etudiant2 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant2)
 collaboration$etudiant2 <- gsub('louis-phillippe_theriault', 'louis-philippe_theriault', collaboration$etudiant2)
 collaboration$etudiant2 <- gsub('phillippe_bourassa', 'philippe_bourassa', collaboration$etudiant2)
@@ -370,10 +379,10 @@ collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', 
 #Écrire un script qui réalise les étapes 0-3 d'un bloc
 
 ###Enregistrer en CSV les tables corrigees
-
-write_csv(collaboration, "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_500/data/tbl_collaborations.csv")
-write_csv(etudiants_final, "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_500/data/tbl_etudiants.csv")
-write_csv(cours_final, "C:/Users/ADMIN/OneDrive - USherbrooke/Bureau/projet_bio_500/data/tbl_cours.csv")
+#set
+write_csv(collaboration, "data/tbl_collaborations.csv")
+write_csv(etudiants_final, "data/tbl_etudiants.csv")
+write_csv(cours_final, "data/tbl_cours.csv")
   
 library(RSQLite)
 con <- dbConnect(SQLite(), dbname="data_directory")
@@ -408,10 +417,17 @@ CREATE TABLE collaborations (
   PRIMARY KEY (etudiant1,etudiant2)
 );"
 dbSendQuery(con, tbl_collaborations)
+<<<<<<< HEAD
 
 bd_collaborations  <-read.csv(file=name_tbl_collab)
 bd_etudiants  <-read.csv(file=name_tbl_cours  )
 bd_cours  <-read.csv(file=name_tbl_etudiants)
+=======
+#faire setwd() avec le directory 
+bd_collaborations  <-read.csv(file=  "data/tbl_collaborations.csv")
+bd_etudiants  <-read.csv(file=  "data/tbl_etudiants.csv")
+bd_cours  <-read.csv(file= "data/tbl_cours.csv")
+>>>>>>> 802d511b7e4a9f0220429f5bf19ad1f1b7de201a
 
 SQL_tbl_cours <- dbWriteTable(con, append = TRUE, name = "cours", value = bd_cours, row.names = FALSE)
 SQL_tbl_etudiants <-dbWriteTable(con, append = TRUE, name = "etudiants", value = bd_etudiants, row.names = FALSE)
@@ -432,3 +448,26 @@ head(cours_test)
 #Question recherche possible: cest quoi la proportion de collaboration réalisée en dehors du bac en ecologie
 #Est ce que certain etudiants occupe plus de place dans reseau de collaboration
 #Est ce que les collaboration sont plus importantes chez les etudiants dun meme programme qu'en dehors des cours obligatoires
+
+##Package a utilisé pour écrire le rapport final 
+#install.packages('rticles')
+#library(rticles)
+
+##Retirer les doublons dans les 3 fichiers csv
+unique(cours)
+cours[!duplicated(cours), ]
+unique(etudiants)
+etudiants[!duplicated(etudiants), ]
+unique(collaboration)
+collaboration[!duplicated(collaboration), ]
+##Retirer les duplicata nayant pas les informations (NA)
+#install.packages('dplyr')
+etudiants[duplicated(etudiants), ]
+library(dplyr)
+###etudiantsf <- etudiants %>% slice(-77)
+etudiants <- etudiants[-77,]
+
+
+
+
+
