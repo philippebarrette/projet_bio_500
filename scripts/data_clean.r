@@ -355,6 +355,30 @@ collaboration$etudiant1 <- gsub('sara_jade_lamontagne', 'sara_jade_lamontagne', 
 collaboration$etudiant1 <- gsub('philippe_leonard_dufour', 'philippe_leonard-dufour', collaboration$etudiant1)
 collaboration$etudiant1 <- gsub('philippe_bourrassa', 'philippe_bourassa', collaboration$etudiant1)
 
+for(rows in names(collaboration)){
+  collaboration[2334:2341,1] <- "eve_dandonneau"
+  collaboration[2376:2380,1] <- "juliette_meilleur"
+  collaboration[2391:2395,1] <- "mia_carriere"
+  collaboration[2317,2] <- "eve_dandonneau"
+  collaboration[2325,2] <- "eve_dandonneau"
+  collaboration[2355,2] <- "eve_dandonneau"
+  collaboration[2363,2] <- "eve_dandonneau"
+  collaboration[2384,2] <- "eve_dandonneau"
+  collaboration[2398,2] <- "eve_dandonneau"
+  collaboration[2406,2] <- "eve_dandonneau"
+  collaboration[2420,2] <- "eve_dandonneau"
+  collaboration[2343,2] <- "juliette_meilleur"
+  collaboration[2346,2] <- "juliette_meilleur"
+  collaboration[2350,2] <- "juliette_meilleur"
+  collaboration[2394,2] <- "juliette_meilleur"
+  collaboration[2416,2] <- "juliette_meilleur"
+  collaboration[2344,2] <- "mia_carriere"
+  collaboration[2347,2] <- "mia_carriere"
+  collaboration[2351,2] <- "mia_carriere"
+  collaboration[2379,2] <- "mia_carriere"
+  collaboration[2417,2] <- "mia_carriere"
+}
+
 ##Correction de la table collaboration (générateur d'erreurs##
 ref_nom <- etudiants_final$prenom_nom
 nom_ver <- collaboration$etudiant2
