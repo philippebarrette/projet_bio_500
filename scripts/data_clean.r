@@ -9,7 +9,7 @@ print(utils::getSrcFilename(function(){}, full.names = TRUE))
 directory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 data_directory <- gsub("/scripts", "/data/",directory)
 name_tbl_collab <-padata_directory <- gsub("/scripts", "/data/",directory)
-ste(data_directory,"tbl_collaborations.csv",sep="")
+#ste(data_directory,"tbl_collaborations.csv",sep="")
 name_tbl_cours<-paste(data_directory,"tbl_cours.csv",sep="")
 name_tbl_etudiants<-paste(data_directory,"tbl_etudiants.csv",sep="")
   
@@ -207,7 +207,7 @@ etudiants$regime_coop <- gsub('FAUX', 'FALSE', etudiants$regime_coop)
 etudiants[etudiants==""] <- NA #rajouter des NA dans les cases vides
 
 ###SYMBOLES
-installed.packages('tidyverse')
+#installed.packages('tidyverse')
 library(tidyverse)
 library(dplyr)
 
@@ -240,7 +240,7 @@ cours_ob <- c("BCL102","BCM104","BCM113","BCM115","BIO104","BIO108","BIO109"
 
 liste_cours <- cours[,1]
 cours_opt <-liste_cours[!liste_cours %in% cours_ob]
-
+cours_final <-data.frame("sigle","optionnel","credits")
 colnames(cours_final) <-c("sigle","optionnel","credits")
 for(i in 1:nrow(cours)){
   cours_final[i,1]<-cours[i,1]
@@ -360,8 +360,8 @@ ref_nom <- etudiants_final$prenom_nom
 nom_ver <- collaboration$etudiant2
 correction <-sapply(nom_ver, function(x) x %in% ref_nom)
 noms_incorrects <- nom_ver[which(!correction)]
-print(noms_incorrects)
-print(correction) 
+#print(noms_incorrects)
+#print(correction) 
 
 
 collaboration$etudiant2 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant2)
@@ -392,6 +392,7 @@ collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', 
 #Calculer le nombre de liens moyens par étudiant et la variance
 #Écrire un script qui réalise les étapes 0-3 d'un bloc
 
+## REQUETE qui donne le nombre de collaborations pour chaque étudiant
 nb_lien_etudiants <- "
 SELECT etudiant1,count(etudiant2) AS nb_lien_par_etudiants
 FROM collaborations
@@ -401,15 +402,7 @@ ORDER BY nb_lien_par_etudiants
 nombre_liens_etudiants <- dbGetQuery(con, nb_lien_etudiants)
 head(nombre_liens_etudiants)
 
-nb_lien_etudiants2 <- "
-SELECT etudiant1,COUNT(*) AS nb_lien_par_etudiants
-FROM collaborations
-GROUP BY etudiant1
-ORDER BY nb_lien_par_etudiants
-;"
-nombre_liens_etudiants2 <- dbGetQuery(con, nb_lien_etudiants2)
-head(nombre_liens_etudiants2)
-
+#REQUETE qui donne le nombre de lien par paire d'étudiant
 nb_lien_paire_etudiants <- "
 SELECT etudiant1,etudiant2 AS nb_lien_paire_etudiants
 FROM collaborations
@@ -420,10 +413,27 @@ ORDER BY nb_lien_par_etudiants
 nombre_liens_par_paire_etudiants <- dbGetQuery(con,nb_lien_paire_etudiants)
 head(nb_lien_paire_etudiants)
 
+#Requete
+nb_lien_etudiants2 <- "
+SELECT etudiant1,COUNT(*) AS nb_lien_par_etudiants
+FROM collaborations
+GROUP BY etudiant1
+ORDER BY nb_lien_par_etudiants
+;"
+nombre_liens_etudiants2 <- dbGetQuery(con, nb_lien_etudiants2)
+head(nombre_liens_etudiants2)
 
-
-
-
+## FIGURE DU RESEAU DE COLLABORATION
+#code des diapos
+#install.packages("igraph")
+#library(igraph)
+#C <- 0.1   # Assigner une interaction à 10% des paires de noeuds
+#S <- 196
+#L <- matrix(0, nr = S, nc = S) 
+#L[runif(S*S) < C] = 1
+#sum(L)
+#g <- graph.adjacency(L) # Créer un objet igraph
+#plot(g)
 
 
 ###Enregistrer en CSV les tables corrigees
@@ -489,9 +499,28 @@ SELECT sigle, optionnel, credits
 cours_test <- dbGetQuery(con, sql_requete)
 head(cours_test)
 
-#Question recherche possible: cest quoi la proportion de collaboration réalisée en dehors du bac en ecologie
-#Est ce que certain etudiants occupe plus de place dans reseau de collaboration
-#Est ce que les collaboration sont plus importantes chez les etudiants dun meme programme qu'en dehors des cours obligatoires
+#Question recherche possible (associée avec une figure)
+#
+#Faire la figure qui représente le réseau de collaboration
+#
+# 1 : Est-ce que le nb total de collaborations pour chaque etudiants suit une tendance particulière ? (courbe normale? Poisson? etc.)
+# Déterminer le nb de classe à faire (proposition : 10 classes d'environ 36 collaborations)
+#Faire un histogramme en x : nb de collaborations (10 classes) et en y : nb d'étudiants
+
+# 2 : C'est quoi la proportion de collaboration réalisée en dehors du bac en ecologie ? 
+# faire 2 tables : une avec les collab des cours obligatoires et une avec les collab des cours optionnels
+#faire 2 matrices (colonne=etudiant1, rangee=etudiant2) à partir des tables de collaboration des cours obligatoires puis des cours optionnels
+#Associer le programme de chaque etudiants (à partir de la table etudiants) à chaque etudiant pour les 2 tables de collab (obl et opt)
+#IF etudiants$programme = ecologie assigner "1" et IF etudiants$programme != ecologie assigner "0". Après dans la matrice faire etudiant1*etudiant2. 
+#Compter le nb. de "1" dans la matrice parmi le nb. de collab des cours obligatoires puis des cours optionnels
+#Faire un diagramme à batons. En x : mettre cours obligatoire et cours optionnel). En y : le nb de collaborations
+
+# Autres propositions de questions
+# Est ce que certain etudiants occupe plus de place dans le reseau de collaboration ? 
+# Est ce que les collaboration sont plus importantes chez les etudiants dun meme programme qu'en dehors des cours obligatoires
+# Est-ce que certains cours ont un plus grand nombre de collaborations que les autres ? (diagramme à bande)
+
+
 
 ##Package a utilisé pour écrire le rapport final 
 #install.packages('rticles')
