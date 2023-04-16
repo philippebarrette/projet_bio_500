@@ -9,7 +9,6 @@ print(utils::getSrcFilename(function(){}, full.names = TRUE))
 directory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 data_directory <- gsub("/scripts", "/data/",directory)
 name_tbl_collab <-padata_directory <- gsub("/scripts", "/data/",directory)
-ste(data_directory,"tbl_collaborations.csv",sep="")
 name_tbl_cours<-paste(data_directory,"tbl_cours.csv",sep="")
 name_tbl_etudiants<-paste(data_directory,"tbl_etudiants.csv",sep="")
   
@@ -380,7 +379,6 @@ collaboration$etudiant2 <- gsub('amelie_harbeck_bastien', 'amelie_harbeck-bastie
 collaboration$etudiant2 <- gsub('francis_bolly', 'francis_boily', collaboration$etudiant2)
 collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', collaboration$etudiant2)
 
-
 ##En post-traitement sur R :
 #Créer la base de données
 #Injecter les données
@@ -393,7 +391,7 @@ collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', 
 #Écrire un script qui réalise les étapes 0-3 d'un bloc
 
 nb_lien_etudiants <- "
-SELECT etudiant1,count(etudiant2) AS nb_lien_par_etudiants
+SELECT etudiant1,count(etudiant2) AS nb_lien_etudiants
 FROM collaborations
 GROUP BY etudiant1
 ORDER BY nb_lien_par_etudiants
@@ -401,12 +399,13 @@ ORDER BY nb_lien_par_etudiants
 nombre_liens_etudiants <- dbGetQuery(con, nb_lien_etudiants)
 head(nombre_liens_etudiants)
 
+dbSendQuery(con,"DROP TABLE nb_lien_etudiants;")
+
 nb_lien_etudiants2 <- "
 SELECT etudiant1,COUNT(*) AS nb_lien_par_etudiants
 FROM collaborations
 GROUP BY etudiant1
-ORDER BY nb_lien_par_etudiants
-;"
+ORDER BY nb_lien_par_etudiants;"
 nombre_liens_etudiants2 <- dbGetQuery(con, nb_lien_etudiants2)
 head(nombre_liens_etudiants2)
 
@@ -414,16 +413,9 @@ nb_lien_paire_etudiants <- "
 SELECT etudiant1,etudiant2 AS nb_lien_paire_etudiants
 FROM collaborations
 INNER JOIN collaborations ON etudiant1=etudiant2 
-
-ORDER BY nb_lien_par_etudiants
-;"
+ORDER BY nb_lien_par_etudiants;"
 nombre_liens_par_paire_etudiants <- dbGetQuery(con,nb_lien_paire_etudiants)
 head(nb_lien_paire_etudiants)
-
-
-
-
-
 
 
 ###Enregistrer en CSV les tables corrigees
@@ -434,17 +426,15 @@ write_csv(cours_final, "data/tbl_cours.csv")
   
 library(RSQLite)
 con <- dbConnect(SQLite(), dbname="data_directory")
+
 tbl_cours <- "
 CREATE TABLE cours (
   sigle         VARCHAR(6),
   optionnel     VARCHAR(5),
   credits       VARCHAR(1),
-  PRIMARY KEY (cours)
-);"
-
-dbSendQuery(con,"DROP TABLE cours;")
-
+  PRIMARY KEY (cours));"
 dbSendQuery(con, tbl_cours)
+
 
 tbl_etudiants <- "
 CREATE TABLE ETUDIANTS (
@@ -456,8 +446,7 @@ CREATE TABLE ETUDIANTS (
   formation_prealable           VARCHAR(40),
   annee_debut                   VARCHAR(5),
   programme                     INTEGER,
-  PRIMARY KEY (prenom_nom)
-);"
+  PRIMARY KEY (prenom_nom));"
 dbSendQuery(con, tbl_etudiants)
 
 tbl_collaborations <- "
@@ -465,8 +454,7 @@ CREATE TABLE collaborations (
   etudiant1      VARCHAR(50),
   etudiant2      VARCHAR(40),
   sigle        VARCHAR(6),
-  PRIMARY KEY (etudiant1,etudiant2)
-);"
+  PRIMARY KEY (etudiant1,etudiant2));"
 dbSendQuery(con, tbl_collaborations)
 
 bd_collaborations  <-read.csv(file=name_tbl_collab)
@@ -484,8 +472,7 @@ connexion<-dbConnect(RSQLite::SQLite(), dbname = "tbl_collaboration")
 
 sql_requete <- "
 SELECT sigle, optionnel, credits
-  FROM cours
-;"
+  FROM cours;"
 cours_test <- dbGetQuery(con, sql_requete)
 head(cours_test)
 
