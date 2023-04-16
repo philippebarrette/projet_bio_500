@@ -9,13 +9,12 @@ print(utils::getSrcFilename(function(){}, full.names = TRUE))
 directory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 data_directory <- gsub("/scripts", "/data/",directory)
 name_tbl_collab <-padata_directory <- gsub("/scripts", "/data/",directory)
-<<<<<<< HEAD
-=======
-#ste(data_directory,"tbl_collaborations.csv",sep="")
->>>>>>> 89df0184332a69f0741c9c98eee84401260b7e6c
+#HEAD
+#=======
 name_tbl_cours<-paste(data_directory,"tbl_cours.csv",sep="")
 name_tbl_etudiants<-paste(data_directory,"tbl_etudiants.csv",sep="")
-  
+name_tbl_collaborations<-paste(data_directory,"tbl_collaborations.csv",sep="")
+
 getwd()
 file.path()
 
@@ -417,31 +416,73 @@ collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', 
 #Calculer le nombre d'étudiants, le nombre de liens et la connectance du réseau
 #Calculer le nombre de liens moyens par étudiant et la variance
 #Écrire un script qui réalise les étapes 0-3 d'un bloc
+  
 
+library(RSQLite)
+con <- dbConnect(SQLite(), dbname="data_directory")
 ## REQUETE qui donne le nombre de collaborations pour chaque étudiant
-nb_lien_etudiants <- "
-SELECT etudiant1,count(etudiant2) AS nb_lien_etudiants
-FROM collaborations
-GROUP BY etudiant1
-ORDER BY nb_lien_par_etudiants
-;"
-nombre_liens_etudiants <- dbGetQuery(con, nb_lien_etudiants)
-head(nombre_liens_etudiants)
-
-<<<<<<< HEAD
+#<<<<<<< HEAD
 dbSendQuery(con,"DROP TABLE nb_lien_etudiants;")
 
-nb_lien_etudiants2 <- "
+nb_lien_etudiants <- "
 SELECT etudiant1,COUNT(*) AS nb_lien_par_etudiants
 FROM collaborations
 GROUP BY etudiant1
 ORDER BY nb_lien_par_etudiants;"
-nombre_liens_etudiants2 <- dbGetQuery(con, nb_lien_etudiants2)
-head(nombre_liens_etudiants2)
+nombre_liens_etudiants <- dbGetQuery(con, nb_lien_etudiants)
+head(nombre_liens_etudiants)
 
-=======
+df 
+
+
+
+
+install.packages("pymysql")
+
+
+# connect to database
+conn = pymysql.connect(host='localhost', user='root', password='', database='mydb')
+cur = conn.cursor()
+
+# execute SQL query
+cur.execute("SELECT name, age, country FROM users")
+
+# fetch all rows
+rows = cur.fetchall()
+
+# define matrix dimensions (rows x columns)
+num_rows = len(rows)
+num_cols = len(rows[0])
+
+# create empty matrix
+matrix = [[0 for j in range(num_cols)] for i in range(num_rows)]
+
+# populate matrix with values from rows
+for i in range(num_rows):
+  for j in range(num_cols):
+  matrix[i][j] = rows[i][j]
+
+# print matrix
+print(matrix)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#=======
 #REQUETE qui donne le nombre de lien par paire d'étudiant
->>>>>>> 89df0184332a69f0741c9c98eee84401260b7e6c
 nb_lien_paire_etudiants <- "
 SELECT etudiant1,etudiant2 AS nb_lien_paire_etudiants
 FROM collaborations
@@ -460,8 +501,8 @@ ORDER BY nb_lien_par_etudiants
 nombre_liens_etudiants2 <- dbGetQuery(con, nb_lien_etudiants2)
 head(nombre_liens_etudiants2)
 
-<<<<<<< HEAD
-=======
+#<<<<<<< HEAD
+#=======
 ## FIGURE DU RESEAU DE COLLABORATION
 #code des diapos
 #install.packages("igraph")
@@ -475,15 +516,12 @@ head(nombre_liens_etudiants2)
 #plot(g)
 
 
->>>>>>> 89df0184332a69f0741c9c98eee84401260b7e6c
 ###Enregistrer en CSV les tables corrigees
 #set
 write_csv(collaboration, "data/tbl_collaborations.csv")
 write_csv(etudiants_final, "data/tbl_etudiants.csv")
 write_csv(cours_final, "data/tbl_cours.csv")
-  
-library(RSQLite)
-con <- dbConnect(SQLite(), dbname="data_directory")
+
 
 tbl_cours <- "
 CREATE TABLE cours (
@@ -492,7 +530,6 @@ CREATE TABLE cours (
   credits       VARCHAR(1),
   PRIMARY KEY (cours));"
 dbSendQuery(con, tbl_cours)
-
 
 tbl_etudiants <- "
 CREATE TABLE ETUDIANTS (
@@ -515,7 +552,7 @@ CREATE TABLE collaborations (
   PRIMARY KEY (etudiant1,etudiant2));"
 dbSendQuery(con, tbl_collaborations)
 
-bd_collaborations  <-read.csv(file=name_tbl_collab)
+bd_collaborations  <-read.csv(file=name_tbl_collaborations)
 bd_etudiants  <-read.csv(file=name_tbl_etudiants)
 bd_cours  <-read.csv(file=name_tbl_cours)
 
