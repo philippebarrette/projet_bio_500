@@ -31,15 +31,15 @@ for(tab in tabNames){
   tabFiles <- allFiles[grep(tab, allFiles)]
     for(groupe in 1:nbGroupe){
     tabName <- paste0(tab, "_",groupe)
-        ficher <- paste0(data_directory, tabFiles[groupe])
+        ficher <- paste0("D:/projet_bio_500/data/", tabFiles[groupe])
         L <- readLines(ficher, n = 1)
     separateur <- ifelse(grepl(';', L), ';', ',')
-    assign(tabName, read.csv(ficher, sep = separateur, stringsAsFactors = FALSE))
+    assign(tabName, read.csv(ficher, sep = separateur, stringsAsFactors = FALSE,encoding="UTF-8"))
     }
 }
 
 #EFFACEMENT DES OBJETS
-rm(list = c('allFiles', 'tab', 'tabFiles', 'tabName', 'ficher', 'groupe'))
+#rm(list = c('allFiles', 'tab', 'tabFiles', 'tabName', 'ficher', 'groupe'))
 #rm(list = ls(all = TRUE))
 
 #CORRECTION DES DONNÉES DES TABLES DE COLLABORATION
@@ -113,11 +113,13 @@ for(col in names(collaboration)){
 #for(col in names(collaboration)){
   collaboration[,col]<- utf8ToInt("\uFFFD")
 #}
-#for(col in names(collaboration)){
-  collaboration[,col] <- gsub("\\\\uFFFD", "", collaboration[col], fixed = TRUE)
-#}
-
-
+  #for(col in names(collaboration)){
+  #collaboration[,col] <- gsub("\\\\uFFFD", "", collaboration[col], fixed = TRUE)
+  #}
+  #for(col in names(collaboration)){
+  # collaboration[,col] <- gsub("\uFFFD", "", collaboration[col], fixed = TRUE)
+    #}
+    #gsub("\uFFFD", "", collaboration[,"etudiant1"], fixed = TRUE)
 #CORRECTION DE LA TABLE ÉTUDIANTS
 ##NOMS
 etudiants$prenom_nom <- gsub('yannick_sageau', 'yanick_sageau', etudiants$prenom_nom)
@@ -423,7 +425,9 @@ collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', 
 
 ###Enregistrer en CSV les tables corrigees
 #set
-write_csv(collaboration, "data/tbl_collaborations.csv")
+a = write_csv(collaboration, "D:/projet_bio_500/data/tbl_collaborations.csv")
+b= read.csv("D:/projet_bio_500/data/tbl_collaborations.csv")
+
 write_csv(etudiants_final, "data/tbl_etudiants.csv")
 write_csv(cours_final, "data/tbl_cours.csv")  
 library(RSQLite)
