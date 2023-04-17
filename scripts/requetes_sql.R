@@ -39,14 +39,8 @@ SQL_tbl_cours <- dbWriteTable(con, append = TRUE, name = "cours", value = bd_cou
 SQL_tbl_etudiants <-dbWriteTable(con, append = TRUE, name = "etudiants", value = bd_etudiants, row.names = FALSE)
 SQL_tbl_collaborations <-dbWriteTable(con, append = TRUE, name = "collaborations", value = bd_collaborations, row.names = FALSE)
 
-#sql_requete <- "
-#SELECT sigle, optionnel, credits
-#  FROM cours;"
-cours_test <- dbGetQuery(con, sql_requete)
-head(cours_test)
-
 ## REQUETE qui donne le nombre de collaborations pour chaque étudiant
-#<<<<<<< HEAD
+
 nb_lien_etudiants <- "
 SELECT etudiant1,COUNT(*) AS nb_lien_par_etudiants
 FROM collaborations
