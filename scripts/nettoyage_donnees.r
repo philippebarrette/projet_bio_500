@@ -1,26 +1,6 @@
-#Denya Berard
-#Marie-Christine Arsenault  
-#Philippe Barrette
-#Roxanne Bernier
-
-#DIRECTORY SETTING
-print(utils::getSrcDirectory(function(){}))
-print(utils::getSrcFilename(function(){}, full.names = TRUE))
-directory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-data_directory <- gsub("/scripts", "/data/",directory)
-name_tbl_collab <-padata_directory <- gsub("/scripts", "/data/",directory)
-#HEAD
-#=======
-name_tbl_cours<-paste(data_directory,"tbl_cours.csv",sep="")
-name_tbl_etudiants<-paste(data_directory,"tbl_etudiants.csv",sep="")
-name_tbl_collaborations<-paste(data_directory,"tbl_collaborations.csv",sep="")
-
-getwd()
-file.path()
-
-#PACKAGES
-library(RSQLite)
-#library(RSQLite, dependencies= TRUE)
+#EFFACEMENT DES OBJETS
+#rm(list = c('allFiles', 'tab', 'tabFiles', 'tabName', 'ficher', 'groupe'))
+#rm(list = ls(all = TRUE))
 
 #INDEXATION DES DONNÉES
 allFiles <- dir(data_directory)
@@ -38,13 +18,9 @@ for(tab in tabNames){
     }
 }
 
-#EFFACEMENT DES OBJETS
-#rm(list = c('allFiles', 'tab', 'tabFiles', 'tabName', 'ficher', 'groupe'))
-#rm(list = ls(all = TRUE))
-
 #CORRECTION DES DONNÉES DES TABLES DE COLLABORATION
 collaboration_7 <- subset(collaboration_7,select=(-(5:9)))
-collaboration_4 <- subset(collaboration_4[-c(109,290:292,431), ])
+collaboration_4 <- collaboration_4[-c(which(collaboration_4$etudiant1 == "")),]
 
 for (i in 1:nrow(collaboration_4)) {
   for(j in 1:ncol(collaboration_4)) {
@@ -56,10 +32,10 @@ for (i in 1:nrow(collaboration_4)) {
 #CORRECTION DES DONNÉES DES TABLES DE COURS
 cour_5 <-subset(cour_5[-c(28), ])
 cour_5 <- subset(cour_5,select=(-(4:9)))
-cour_6 <-subset(cour_6[-c(13:235), ])
-cour_7 <-subset(cour_7[-c(13:235), ])
+cour_6 <-cour_6[-c(which(cour_6$sigle =="")), ]
+cour_7 <-cour_7[-c(which(cour_7$sigle =="")), ]
 cour_7 <- subset(cour_7,select=(-(4:9)))
-cour_10 <- subset(cour_10[-c(25:29), ])
+cour_10 <-cour_7[-c(which(cour_10$sigle =="")), ]
 names(cour_4)[names(cour_4) =="?..sigle"]<-"sigle"
 
 #CORRECTION DES DONNÉES DES TABLES D'ÉTUDIANTS
@@ -68,7 +44,7 @@ etudiant_4 <- subset(etudiant_4,select=(-(9:9)))
 etudiant_5 <- subset(etudiant_5,select=(-(9:9)))
 etudiant_7 <- subset(etudiant_7,select=(-(9:9)))
 etudiant_9 <- subset(etudiant_9,select=(-(9:9)))
-etudiant_6 <- subset(etudiant_6[-c(52:59), ])
+etudiant_6 <- etudiant_6[-c(which(etudiant_6$prenom_nom == "")),]
 names(etudiant_4)[names(etudiant_4) =="prenom_nom."]<-"prenom_nom"
 
 #CRÉATION DES 3 TABLES FINALES
@@ -95,9 +71,8 @@ for (i in 1:nrow(collaboration)) {
 }
 collaboration$etudiant1 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant1)
 collaboration$etudiant2 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant2)
-###SYMBOLES
-#install.packages("tidyverse")
-library(tidyverse)
+
+###CORRECTION DES SYMBOLES
 for(col in names(collaboration)){
   collaboration[,col] <- str_replace_all(collaboration[,col],pattern="\\s",replacement="")
 }
@@ -110,19 +85,8 @@ for(col in names(collaboration)){
 for(col in names(collaboration)){
   collaboration[,col] <- str_replace_all(collaboration[,col],pattern="fï¿½r",replacement="")
 }
-#for(col in names(collaboration)){
-  #collaboration[,col]<- utf8ToInt("\uFFFD")
-#}
-  #for(col in names(collaboration)){
-  #collaboration[,col] <- gsub("\\\\uFFFD", "", collaboration[col], fixed = TRUE)
-  #}
-  #for(col in names(collaboration)){
-  # collaboration[,col] <- gsub("\uFFFD", "", collaboration[col], fixed = TRUE)
-    #}
-    #gsub("\uFFFD", "", collaboration[,"etudiant1"], fixed = TRUE)
-  
 for(col in names(collaboration)){
-    collaboration[,col] <- str_replace_all(collaboration[,col],pattern="???",replacement="")
+  collaboration[,col] <- str_replace_all(collaboration[,col],pattern="???",replacement="")
 }
   
 #CORRECTION DE LA TABLE ÉTUDIANTS
@@ -131,122 +95,87 @@ etudiants$prenom_nom <- gsub('yannick_sageau', 'yanick_sageau', etudiants$prenom
 etudiants$prenom <- gsub('yannick', 'yanick', etudiants$prenom)
 etudiants$prenom_nom <- gsub('yanick_sagneau', 'yanick_sageau', etudiants$prenom_nom)
 etudiants$nom <- gsub('sagneau', 'sageau', etudiants$nom)
-
 etudiants$prenom_nom <- gsub('peneloppe_robert', 'penelope_robert', etudiants$prenom_nom)
 etudiants$prenom <- gsub('peneloppe', 'penelope', etudiants$prenom)
-
 etudiants$prenom_nom <- gsub('louis-phillippe_theriault', 'louis-philippe_theriault', etudiants$prenom_nom)
 etudiants$prenom <- gsub('louis-phillipe', 'louis-philippe', etudiants$prenom)
-
 etudiants$prenom_nom <- gsub('phillippe_bourassa', 'philippe_bourassa', etudiants$prenom_nom)
-
 etudiants$prenom_nom <- gsub('sabrina_leclerc', 'sabrina_leclercq', etudiants$prenom_nom)
-
 etudiants$nom <- gsub('leclerc', 'leclercq', etudiants$nom)
-
 etudiants$prenom_nom <- gsub('catherine_viel_lapointe', 'catherine_viel-lapointe', etudiants$prenom_nom)
 etudiants$nom <- gsub('viel_lapointe', 'viel-lapointe', etudiants$nom)
-
 etudiants$prenom_nom <- gsub('marie_christine_arseneau', 'marie-christine_arseneau', etudiants$prenom_nom)
 etudiants$prenom <- gsub('marie_christine', 'marie-christine', etudiants$prenom)
-
 etudiants$region_administrative <- gsub('gaspesie_iles_de_la_madeleine', 'gaspesie_iles-de-la-madeleine', etudiants$region_administrative)
-
 etudiants$prenom_nom <- gsub('kayla_trempe_kay', 'kayla_trempe-kay', etudiants$prenom_nom)
 etudiants$nom <- gsub('trempe_kay', 'trempe-kay', etudiants$nom)
-
 etudiants$prenom <- gsub('cassandre', 'cassandra', etudiants$prenom)
-
 etudiants$prenom_nom <- gsub('philippe_barette', 'philippe_barrette', etudiants$prenom_nom)
-
 etudiants$prenom_nom <- gsub('margerite_duchesne', 'marguerite_duchesne', etudiants$prenom_nom)
-
 etudiants$prenom_nom <- gsub('mael_guerin', 'mael_gerin', etudiants$prenom_nom)
 etudiants$nom <- gsub('guerin', 'gerin', etudiants$nom)
-
 etudiants$prenom_nom <- gsub('cassandra_gobin', 'cassandra_godin', etudiants$prenom_nom)
 etudiants$nom <- gsub('gobin', 'godin', etudiants$nom)
-
 etudiants$prenom_nom <- gsub('louis_philipe_raymond', 'louis-philippe_raymond', etudiants$prenom_nom)
 etudiants$prenom <- gsub('louis_philippe', 'louis-philippe', etudiants$prenom)
-
 etudiants$prenom_nom <- gsub('audrey_ann_jobin', 'audrey-ann_jobin', etudiants$prenom_nom)
 etudiants$prenom <- gsub('audrey_ann', 'audrey-ann', etudiants$prenom)
-
 etudiants$prenom_nom <- gsub('jonathan_rondeau_leclaire', 'jonathan_rondeau-leclaire', etudiants$prenom_nom)
 etudiants$nom <- gsub('rondeau_leclaire', 'rondeau-leclaire', etudiants$nom)
-
 etudiants$prenom_nom <- gsub('arianne_barette', 'ariane_barrette', etudiants$prenom_nom)
 etudiants$prenom_nom <- gsub('ariane_barette', 'ariane_barrette', etudiants$prenom_nom)
 etudiants$nom <- gsub('barette', 'barrette', etudiants$nom)
 etudiants$prenom <- gsub('arianne', 'ariane', etudiants$prenom)
-
 etudiants$prenom_nom <- gsub('samule_fortin', 'samuel_fortin', etudiants$prenom_nom)
-
 etudiants$nom <- gsub('harbeck_bastien', 'harbeck-bastien', etudiants$nom)
 etudiants$nom <- gsub('harbeck bastien', 'harbeck-bastien', etudiants$nom)
 etudiants$prenom_nom <-gsub('amelie_harbeck bastien', 'amelie_harbeck-bastien', etudiants$prenom_nom)
 etudiants$prenom_nom <-gsub('amelie_harbeck_bastien', 'amelie_harbeck-bastien', etudiants$prenom_nom)
 etudiants$prenom_nom <- gsub('amelie_harbeckbastien', 'amelie_harbeck-bastien', etudiants$prenom_nom)
-
 etudiants$prenom_nom <- gsub('francis_bolly', 'francis_boily', etudiants$prenom_nom)
 etudiants$nom <- gsub('bolly', 'boily', etudiants$nom)
-
 etudiants$prenom_nom <- gsub('marie_burghin', 'marie_bughin', etudiants$prenom_nom)
 etudiants$nom <- gsub('burghin', 'bughin', etudiants$nom)
-
 etudiants$nom <- gsub('therrien', 'theriault', etudiants$nom)
-
 etudiants$prenom_nom <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', etudiants$prenom_nom)
 etudiants$prenom <- gsub('sara-jade', 'sara_jade', etudiants$prenom)
-
 etudiants$nom <- gsub('guilemette', 'guillemette', etudiants$nom)
-
 etudiants$nom <- gsub('ramond', 'raymond', etudiants$nom)
-
 etudiants$prenom_nom <- gsub('ihuoma_elsie-ebere', 'ihuoma_elsie_ebere', etudiants$prenom_nom)
-
 etudiants$nom <- gsub('elsie-ebere', 'elsie_ebere', etudiants$nom)
-
 etudiants$prenom_nom <- gsub('edouard_nadon-baumier', 'edouard_nadon-beaumier', etudiants$prenom_nom)
 etudiants$nom <- gsub('nadon-baumier', 'nadon-beaumier', etudiants$nom)
-
 etudiants$prenom_nom <- gsub('sabrina_leclercqq', 'edouard_nadon-beaumier', etudiants$prenom_nom)
 etudiants$nom <- gsub('leclercqq', 'leclercq', etudiants$nom)
-
 etudiants[51,7][etudiants[51,7]=='E2021'] <- "A2021"
 etudiants[38,5][etudiants[38,5]=='TRUE'] <- "FALSE"
-
 etudiants$region_administrative <- gsub('bas-st-laurent', 'bas-saint-laurent', etudiants$region_administrative)
 etudiants$region_administrative <- gsub('monterigie', 'monteregie', etudiants$region_administrative)
-
 etudiants$regime_coop <- gsub('VRAI', 'TRUE', etudiants$regime_coop)
 etudiants$regime_coop <- gsub('FAUX', 'FALSE', etudiants$regime_coop)
-
 etudiants[etudiants==""] <- NA #rajouter des NA dans les cases vides
 
 ###SYMBOLES
-#installed.packages('tidyverse')
-library(tidyverse)
-library(dplyr)
-
 for(col in names(etudiants)){
   etudiants[,col] <- str_replace_all(pattern="\\s",etudiants[,col],replacement="")
   etudiants[,col] <- str_replace_all(pattern="<a0>",etudiants[,col],replacement="")
   etudiants[,col] <- str_replace_all(pattern="ï¿½",etudiants[,col],replacement="")
 }
+
 #CORRECTION DE LA TABLE DE COURS
 cours$optionnel <- gsub('VRAI', 'TRUE', cours$optionnel)
 cours$optionnel <- gsub('FAUX', 'FALSE', cours$optionnel)
 cours[69,3][cours[69,3]=='2'] <- "1"   #changer la ligne 178 pour 1 credit
 cours[40,3][cours[40,3]=='1'] <- "2"   #changer la ligne 40 pour 2 credits
 
+#LISTE DES COURS OBLIGATOIRES
 cours_ob <- c("BCL102","BCM104","BCM113","BCM115","BIO104","BIO108","BIO109"
 ,"BIO300","BIO402","BIO500","BOT106","BOT400","BOT512","ECL110","ECL307","ECL308"
 ,"ECL403","ECL404","ECL510","ECL515","ECL516","ECL527","ECL604","ECL610"
 ,"ECL611","ECL615","GNT302","MCB100","MCB101","PSL105","TSB302","ZOO105"
 ,"ZOO106","ZOO306","ZOO307")
 
+                                  #AJOUTER ANNOTATION!!!
 liste_cours <- cours[,1]
 cours_opt <-liste_cours[!liste_cours %in% cours_ob]
 cours_final <-data.frame("sigle","optionnel","credits")
@@ -265,7 +194,8 @@ for(i in 1:nrow(cours_final)){
   }
 }
 cours_final <- cours_final[!duplicated(cours_final),]
-######cours_final_2(colnames(c("sigle","optionnel","credit")))
+
+                                    #AJOUTER ANNOTATION!!!
 
 etudiants_intermediaire <-data.frame(colnames(etudiants))
 for(i in 1:nrow(etudiants)){
@@ -278,6 +208,9 @@ for(i in 1:nrow(etudiants)){
   etudiants_intermediaire[i,7]<-etudiants[i,7]
   etudiants_intermediaire[i,8]<-etudiants[i,8]
 }
+
+                                    #A changer avec les nouveaux csv!!!
+
 for(rows in names(etudiants_intermediaire)){
   etudiants_intermediaire[153,1] <- "eve_dandonneau"
   etudiants_intermediaire[163,1] <- "juliette_meilleur"
@@ -308,6 +241,7 @@ for(input in 1:nrow(etudiants_intermediaire)){
     }
 }
 
+                              
 ##Correction de la table collaboration (gÃ©nÃ©rateur d'erreurs##
 ref_nom <- etudiants_final$prenom_nom
 nom_ver <- collaboration$etudiant1
@@ -315,6 +249,7 @@ correction <-sapply(nom_ver, function(x) x %in% ref_nom)
 noms_incorrects <- nom_ver[which(!correction)]
 print(noms_incorrects)
 print(correction)
+
 ##correction tableau collaboration par DB
 collaboration$etudiant1 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant1)
 collaboration$etudiant1 <- gsub('savier_samson', 'xavier_samson', collaboration$etudiant1)
@@ -363,6 +298,7 @@ collaboration$etudiant1 <- gsub('sara_jade_lamontagne', 'sara_jade_lamontagne', 
 collaboration$etudiant1 <- gsub('philippe_leonard_dufour', 'philippe_leonard-dufour', collaboration$etudiant1)
 collaboration$etudiant1 <- gsub('philippe_bourrassa', 'philippe_bourassa', collaboration$etudiant1)
 
+                            #A changer avec les nouveaux csv!!!
 #for(rows in names(collaboration)){
   collaboration[2334:2341,1] <- "eve_dandonneau"
   collaboration[2376:2380,1] <- "juliette_meilleur"
@@ -411,12 +347,7 @@ collaboration$etudiant2 <- gsub('amelie_harbeck_bastien', 'amelie_harbeck-bastie
 collaboration$etudiant2 <- gsub('francis_bolly', 'francis_boily', collaboration$etudiant2)
 collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', collaboration$etudiant2)
 
-#collaboration <- lapply(collaboration, function(x) gsub("\uFFFD", "", x, fixed = TRUE))
-
-#etudiants_final$prenom_nom <- iconv(etudiants_final$prenom_nom, to = "UTF-8", sub = "byte")
-#etudiants_final$nom <- iconv(etudiants_final$nom, to = "UTF-8", sub = "byte")
-#etudiants_final$prenom <- iconv(etudiants_final$prenom, to = "UTF-8", sub = "byte")
-
+                                            #a mettre dans un autre script
 ##En post-traitement sur R :
 #Créer la base de données
 #Injecter les données
@@ -430,11 +361,9 @@ collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', 
 
 ###Enregistrer en CSV les tables corrigees
 #set
-a = write_csv(collaboration, "D:/projet_bio_500/data/tbl_collaborations.csv")
-b= read.csv("D:/projet_bio_500/data/tbl_collaborations.csv")
-
-write_csv(etudiants_final, "data/tbl_etudiants.csv")
-write_csv(cours_final, "data/tbl_cours.csv")  
+write_csv(collaboration, paste(data_directory, "tbl_collaborations.csv",sep=""))
+write_csv(etudiants_final, paste(data_directory, "tbl_etudiants.csv",sep=""))
+write_csv(cours_final, paste(data_directory, "tbl_cours.csv",sep=""))
 library(RSQLite)
 rsqliteVersion()
 RSQLite::dbConnect()
