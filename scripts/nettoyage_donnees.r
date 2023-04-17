@@ -21,6 +21,8 @@ for(tab in tabNames){
 #CORRECTION DES DONNÉES DES TABLES DE COLLABORATION
 collaboration_7 <- subset(collaboration_7,select=(-(5:9)))
 collaboration_4 <- collaboration_4[-c(which(collaboration_4$etudiant1 == "")),]
+collaboration_6 <- subset(collaboration_6[1:nrow(collaboration_6),2:5])
+
 
 for (i in 1:nrow(collaboration_4)) {
   for(j in 1:ncol(collaboration_4)) {
@@ -85,9 +87,7 @@ for(col in names(collaboration)){
 for(col in names(collaboration)){
   collaboration[,col] <- str_replace_all(collaboration[,col],pattern="fï¿½r",replacement="")
 }
-for(col in names(collaboration)){
-  collaboration[,col] <- str_replace_all(collaboration[,col],pattern="???",replacement="")
-}
+
   
 #CORRECTION DE LA TABLE ÉTUDIANTS
 ##NOMS
@@ -241,7 +241,6 @@ for(input in 1:nrow(etudiants_intermediaire)){
     }
 }
 
-                              
 ##Correction de la table collaboration (gÃ©nÃ©rateur d'erreurs##
 ref_nom <- etudiants_final$prenom_nom
 nom_ver <- collaboration$etudiant1
@@ -365,12 +364,6 @@ write_csv(collaboration, paste(data_directory, "tbl_collaborations.csv",sep=""))
 write_csv(etudiants_final, paste(data_directory, "tbl_etudiants.csv",sep=""))
 write_csv(cours_final, paste(data_directory, "tbl_cours.csv",sep=""))
 
-rsqliteVersion()
-RSQLite::dbConnect()
-con <- dbConnect(SQLite(), dbname="data_directory")
-
-#dbSendQuery(con,"DROP TABLE nb_lien_etudiants;")
-
 ##Retirer les doublons dans les 3 fichiers csv
 unique(cours)
 cours[!duplicated(cours), ]
@@ -384,118 +377,6 @@ etudiants[duplicated(etudiants), ]
 ###etudiantsf <- etudiants %>% slice(-77)
                                       #à changer
 etudiants <- etudiants[-77,]
-
-#MATRICE DES INTERACTIONS ENTRE LES ETUDIANTS
-compter_collaborations_matrice <- function(collaboration) {
-  personnes <- c(etudiants_final[,1])
-  n_personnes <- length(personnes)
-    # Créer une matrice vide pour stocker les compteurs de collaborations
-  matrice_collaborations <- matrix(0, nrow = n_personnes, ncol = n_personnes,
-                                   dimnames = list(personnes, personnes))
-    # Parcourir la base de données et mettre à jour les compteurs de collaborations
-  for (i in 1:nrow(etudiants_final)) {
-    personne1 <- collaboration[i, "etudiant1"] 
-    personne2 <- collaboration[i, "etudiant2"]
-  # Mettre à jour le compteur de collaborations dans la matrice
-    matrice_collaborations[personne1, personne2] <- matrice_collaborations[personne1, personne2] + 1
-    matrice_collaborations[personne2, personne1] <- matrice_collaborations[personne2, personne1] + 1
-  }
-    return(matrice_collaborations)
-}
-resultat_collaboration_matrice <- compter_collaborations_matrice(collaboration)
-print(resultat_collaboration_matrice)
-
-
-
-## FIGURE DU RESEAU DE COLLABORATION
-g <- graph.adjacency(resultat_collaboration_matrice, mode = "undirected")
-deg <- degree(g)
-rk <- rank(deg)
-deg <- degree(g)
-size.vec <- (deg/max(deg)) * 50
-# normalize the node sizes using scale()
-size.vec <- scale(size.vec, center = FALSE) * 10
-library(RColorBrewer)
-install.packages("viridis")
-library(viridis)
-col.vec <- viridis(length(rk))
-# set color attribute for each vertex based on its rank
-for (i in 1:vcount(g)) {
-  V(g)$color[i] <- col.vec[rk[i]]
-}
-V(g)$size <- max((5 + deg/2)*2, 10)  # minimum size set to 10
-E(g)$weight <- 1/deg^2
-layout <- layout_with_kk(g, weights = E(g)$weight)
-tryCatch({
-  plot(g, layout=layout, vertex.label=NA, vertex.frame.color=NA, 
-       vertex.color = alpha(V(g)$color, 0.8), vertex.size = size.vec, 
-       edge.arrow.mode=1, edge.arrow.size=0.5)
-}, error = function(e) {
-  cat("Error in plot:", conditionMessage(e), "\n")
-  if (exists("vr")) {
-    cat("Vertices causing the error:", which(is.na(vr)), "\n")
-  }
-})
-
-g <- graph.adjacency(resultat_collaboration_matrice, mode = "undirected")
-deg <- degree(g)
-rk <- rank(deg)
-size.vec <- (deg/max(deg))^2 * 30
-library(RColorBrewer)
-col.vec <- rainbow(length(rk))
-# set color attribute for each vertex based on its rank
-for (i in 1:vcount(g)) {
-  V(g)$color[i] <- col.vec[rk[i]]
-}
-V(g)$size <- ifelse(deg <= median(deg), 15 + deg/2, 25 + deg/2)
-E(g)$weight <- 1/deg^2
-layout <- layout_with_kk(g, weights = E(g)$weight)
-tryCatch({
-  plot(g, layout=layout, vertex.label=NA, vertex.frame.color=NA, 
-       vertex.color = V(g)$color, vertex.size = V(g)$size, 
-       edge.arrow.mode=1, edge.arrow.size=0.5)
-}, error = function(e) {
-  cat("Error in plot:", conditionMessage(e), "\n")
-  if (exists("vr")) {
-    cat("Vertices causing the error:", which(is.na(vr)), "\n")
-  }
-})
-
-has_non_finite <- FALSE
-for (i in 1:156) {
-  for (j in 1:156) {
-    if (is.nan(resultat_collaboration_matrice[i,j]) || is.infinite(resultat_collaboration_matrice[i,j])) {
-      has_non_finite <- TRUE
-      break
-    }
-  }
-  if (has_non_finite) break
-}
-
-if (has_non_finite) {
-  # do something to handle the non-finite values
-} else {
-  # proceed with your code
-}
-
-# Évalue la présence communautés dans le graphe
-wtc = walktrap.community(g)
-# Calcule la modularité à partir des communautés
-modularity(wtc)
-distances(g)
-eigen_centrality(g)$vector
-
-
-#code des diapos
-install.packages("igraph")
-library(igraph)
-C <- 0.1   # Assigner une interaction à 10% des paires de noeuds
-S <- nrow(resultat_collaboration_matrice)
-L <- matrix(0, nr = S, nc = S) 
-L[runif(S*S) < C] = 1
-sum(L)
-g <- graph.adjacency(L) # Créer un objet igraph
-plot(g)
 
 #Question recherche possible (associée avec une figure)
 #

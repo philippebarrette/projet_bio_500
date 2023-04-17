@@ -1,3 +1,6 @@
+rsqliteVersion()
+con <- dbConnect(SQLite(), dbname="data_directory")
+#dbSendQuery(con,"DROP TABLE nb_lien_etudiants;")
 
 tbl_cours <- "
 CREATE TABLE cours (
