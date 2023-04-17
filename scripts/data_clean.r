@@ -107,6 +107,16 @@ for(col in names(collaboration)){
 for(col in names(collaboration)){
   collaboration[,col] <- str_replace_all(collaboration[,col],pattern="ï¿½",replacement="")
 }
+for(col in names(collaboration)){
+  collaboration[,col] <- str_replace_all(collaboration[,col],pattern="fï¿½r",replacement="")
+}
+#for(col in names(collaboration)){
+  collaboration[,col]<- utf8ToInt("\uFFFD")
+#}
+#for(col in names(collaboration)){
+  collaboration[,col] <- gsub("\\\\uFFFD", "", collaboration[col], fixed = TRUE)
+#}
+
 
 #CORRECTION DE LA TABLE ÉTUDIANTS
 ##NOMS
@@ -218,17 +228,7 @@ for(col in names(etudiants)){
   etudiants[,col] <- str_replace_all(pattern="<a0>",etudiants[,col],replacement="")
   etudiants[,col] <- str_replace_all(pattern="ï¿½",etudiants[,col],replacement="")
 }
-#
-###ENLEVER DOUBLONS
-#etudiants_sans_doublons <- data.frame(colnames(etudiants))
-#for(i in 1:nrow(etudiants)){
-#if (etudiants[i,1] <-etudiants_sans_doublons[1:nrow(etudiants_sans_doublons),1]){
- # }
-  #else(etudiants_sans_doublons[1:nrow(etudiants_sans_doublons,1)]<-etudiants[i,1]){
-  #}
-#}
-
-  #CORRECTION DE LA TABLE DE COURS
+#CORRECTION DE LA TABLE DE COURS
 cours$optionnel <- gsub('VRAI', 'TRUE', cours$optionnel)
 cours$optionnel <- gsub('FAUX', 'FALSE', cours$optionnel)
 cours[69,3][cours[69,3]=='2'] <- "1"   #changer la ligne 178 pour 1 credit
@@ -271,6 +271,14 @@ for(i in 1:nrow(etudiants)){
   etudiants_intermediaire[i,7]<-etudiants[i,7]
   etudiants_intermediaire[i,8]<-etudiants[i,8]
 }
+for(rows in names(etudiants_intermediaire)){
+  etudiants_intermediaire[153,1] <- "eve_dandonneau"
+  etudiants_intermediaire[163,1] <- "juliette_meilleur"
+  etudiants_intermediaire[174,1] <- "mia_carriere"
+  etudiants_intermediaire[153,3] <- "dandonneau"
+  etudiants_intermediaire[163,3] <- "meilleur"
+  etudiants_intermediaire[174,3] <- "carriere"
+}
 etudiants_final <-data.frame("prenom_nom","prenom","nom", "region_administrative","regime_coop", "formation_prealable","annee_debut","programme")
 etudiants_final <- setNames(etudiants_final, c("prenom_nom","prenom","nom", "region_administrative","regime_coop", "formation_prealable","annee_debut","programme"))
 nb_nom_distinct <- 0
@@ -291,15 +299,6 @@ for(input in 1:nrow(etudiants_intermediaire)){
       etudiants_final[nb_nom_distinct+1,]<- etudiants_intermediaire[input,]
       nb_nom_distinct <- nb_nom_distinct+1
     }
-}
-
-for(rows in names(etudiants_intermediaire)){
-  etudiants_intermediaire[153,1] <- "eve_dandonneau"
-  etudiants_intermediaire[163,1] <- "juliette_meilleur"
-  etudiants_intermediaire[174,1] <- "mia_carriere"
-  etudiants_intermediaire[153,3] <- "dandonneau"
-  etudiants_intermediaire[163,3] <- "meilleur"
-  etudiants_intermediaire[174,3] <- "carriere"
 }
 
 ##Correction de la table collaboration (gÃ©nÃ©rateur d'erreurs##
@@ -357,7 +356,7 @@ collaboration$etudiant1 <- gsub('sara_jade_lamontagne', 'sara_jade_lamontagne', 
 collaboration$etudiant1 <- gsub('philippe_leonard_dufour', 'philippe_leonard-dufour', collaboration$etudiant1)
 collaboration$etudiant1 <- gsub('philippe_bourrassa', 'philippe_bourassa', collaboration$etudiant1)
 
-for(rows in names(collaboration)){
+#for(rows in names(collaboration)){
   collaboration[2334:2341,1] <- "eve_dandonneau"
   collaboration[2376:2380,1] <- "juliette_meilleur"
   collaboration[2391:2395,1] <- "mia_carriere"
@@ -379,7 +378,7 @@ for(rows in names(collaboration)){
   collaboration[2351,2] <- "mia_carriere"
   collaboration[2379,2] <- "mia_carriere"
   collaboration[2417,2] <- "mia_carriere"
-}
+#}
 
 ##Correction de la table collaboration (gÃ©nÃ©rateur d'erreurs##
 ref_nom <- etudiants_final$prenom_nom
@@ -388,7 +387,6 @@ correction <-sapply(nom_ver, function(x) x %in% ref_nom)
 noms_incorrects <- nom_ver[which(!correction)]
 #print(noms_incorrects)
 #print(correction) 
-
 
 collaboration$etudiant2 <- gsub('yannick_sageau', 'yanick_sageau', collaboration$etudiant2)
 collaboration$etudiant2 <- gsub('louis-phillippe_theriault', 'louis-philippe_theriault', collaboration$etudiant2)
@@ -406,6 +404,12 @@ collaboration$etudiant2 <- gsub('amelie_harbeck_bastien', 'amelie_harbeck-bastie
 collaboration$etudiant2 <- gsub('francis_bolly', 'francis_boily', collaboration$etudiant2)
 collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', collaboration$etudiant2)
 
+#collaboration <- lapply(collaboration, function(x) gsub("\uFFFD", "", x, fixed = TRUE))
+
+#etudiants_final$prenom_nom <- iconv(etudiants_final$prenom_nom, to = "UTF-8", sub = "byte")
+#etudiants_final$nom <- iconv(etudiants_final$nom, to = "UTF-8", sub = "byte")
+#etudiants_final$prenom <- iconv(etudiants_final$prenom, to = "UTF-8", sub = "byte")
+
 ##En post-traitement sur R :
 #Créer la base de données
 #Injecter les données
@@ -416,112 +420,33 @@ collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', 
 #Calculer le nombre d'étudiants, le nombre de liens et la connectance du réseau
 #Calculer le nombre de liens moyens par étudiant et la variance
 #Écrire un script qui réalise les étapes 0-3 d'un bloc
-  
-
-library(RSQLite)
-con <- dbConnect(SQLite(), dbname="data_directory")
-## REQUETE qui donne le nombre de collaborations pour chaque étudiant
-#<<<<<<< HEAD
-dbSendQuery(con,"DROP TABLE nb_lien_etudiants;")
-
-nb_lien_etudiants <- "
-SELECT etudiant1,COUNT(*) AS nb_lien_par_etudiants
-FROM collaborations
-GROUP BY etudiant1
-ORDER BY nb_lien_par_etudiants;"
-nombre_liens_etudiants <- dbGetQuery(con, nb_lien_etudiants)
-head(nombre_liens_etudiants)
-
-df 
-
-
-
-
-install.packages("pymysql")
-
-
-# connect to database
-conn = pymysql.connect(host='localhost', user='root', password='', database='mydb')
-cur = conn.cursor()
-
-# execute SQL query
-cur.execute("SELECT name, age, country FROM users")
-
-# fetch all rows
-rows = cur.fetchall()
-
-# define matrix dimensions (rows x columns)
-num_rows = len(rows)
-num_cols = len(rows[0])
-
-# create empty matrix
-matrix = [[0 for j in range(num_cols)] for i in range(num_rows)]
-
-# populate matrix with values from rows
-for i in range(num_rows):
-  for j in range(num_cols):
-  matrix[i][j] = rows[i][j]
-
-# print matrix
-print(matrix)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#=======
-#REQUETE qui donne le nombre de lien par paire d'étudiant
-nb_lien_paire_etudiants <- "
-SELECT etudiant1,etudiant2 AS nb_lien_paire_etudiants
-FROM collaborations
-INNER JOIN collaborations ON etudiant1=etudiant2 
-ORDER BY nb_lien_par_etudiants;"
-nombre_liens_par_paire_etudiants <- dbGetQuery(con,nb_lien_paire_etudiants)
-head(nb_lien_paire_etudiants)
-
-#Requete
-nb_lien_etudiants2 <- "
-SELECT etudiant1,COUNT(*) AS nb_lien_par_etudiants
-FROM collaborations
-GROUP BY etudiant1
-ORDER BY nb_lien_par_etudiants
-;"
-nombre_liens_etudiants2 <- dbGetQuery(con, nb_lien_etudiants2)
-head(nombre_liens_etudiants2)
-
-#<<<<<<< HEAD
-#=======
-## FIGURE DU RESEAU DE COLLABORATION
-#code des diapos
-#install.packages("igraph")
-#library(igraph)
-#C <- 0.1   # Assigner une interaction à 10% des paires de noeuds
-#S <- 196
-#L <- matrix(0, nr = S, nc = S) 
-#L[runif(S*S) < C] = 1
-#sum(L)
-#g <- graph.adjacency(L) # Créer un objet igraph
-#plot(g)
-
 
 ###Enregistrer en CSV les tables corrigees
 #set
 write_csv(collaboration, "data/tbl_collaborations.csv")
 write_csv(etudiants_final, "data/tbl_etudiants.csv")
-write_csv(cours_final, "data/tbl_cours.csv")
+write_csv(cours_final, "data/tbl_cours.csv")  
+library(RSQLite)
+rsqliteVersion()
+RSQLite::dbConnect()
+con <- dbConnect(SQLite(), dbname="data_directory")
 
+#dbSendQuery(con,"DROP TABLE nb_lien_etudiants;")
+
+##Retirer les doublons dans les 3 fichiers csv
+unique(cours)
+cours[!duplicated(cours), ]
+unique(etudiants)
+etudiants[!duplicated(etudiants), ]
+unique(collaboration)
+collaboration[!duplicated(collaboration), ]
+
+##Retirer les duplicata nayant pas les informations (NA)
+#install.packages('dplyr')
+etudiants[duplicated(etudiants), ]
+library(dplyr)
+###etudiantsf <- etudiants %>% slice(-77)
+etudiants <- etudiants[-77,]
 
 tbl_cours <- "
 CREATE TABLE cours (
@@ -560,16 +485,92 @@ SQL_tbl_cours <- dbWriteTable(con, append = TRUE, name = "cours", value = bd_cou
 SQL_tbl_etudiants <-dbWriteTable(con, append = TRUE, name = "etudiants", value = bd_etudiants, row.names = FALSE)
 SQL_tbl_collaborations <-dbWriteTable(con, append = TRUE, name = "collaborations", value = bd_collaborations, row.names = FALSE)
 
-library(RSQLite)
-rsqliteVersion()
-RSQLite::dbConnect()
-connexion<-dbConnect(RSQLite::SQLite(), dbname = "tbl_collaboration")
-
-sql_requete <- "
-SELECT sigle, optionnel, credits
-  FROM cours;"
+#sql_requete <- "
+#SELECT sigle, optionnel, credits
+#  FROM cours;"
 cours_test <- dbGetQuery(con, sql_requete)
 head(cours_test)
+
+## REQUETE qui donne le nombre de collaborations pour chaque étudiant
+#<<<<<<< HEAD
+nb_lien_etudiants <- "
+SELECT etudiant1,COUNT(*) AS nb_lien_par_etudiants
+FROM collaborations
+GROUP BY etudiant1
+ORDER BY nb_lien_par_etudiants;"
+nombre_liens_etudiants <- dbGetQuery(con, nb_lien_etudiants)
+head(nombre_liens_etudiants)
+
+#LISTES DES INTERACTIONS ENTRE LES ETUDIANTS
+compter_collaborations <- function(base_de_donnees) {
+  collaborations_liste <- list()
+  
+  # Parcourir la base de données
+  for (i in 1:nrow(collaboration)) {
+    personne1 <- base_de_donnees[i, "etudiant1"] 
+    personne2 <- base_de_donnees[i, "etudiant2"] 
+    
+    # Ajouter les personnes à la liste des collaborations si elles ne sont pas déjà présentes
+    if (!(personne1 %in% names(collaborations_liste))) {
+      collaborations_liste[[personne1]] <- list()
+    }
+    if (!(personne2 %in% names(collaborations_liste))) {
+      collaborations_liste[[personne2]] <- list()
+    }
+    
+    # Mettre à jour les compteurs de collaborations_liste pour les deux personnes
+    collaborations_liste[[personne1]][[personne2]] <- ifelse(is.null(collaborations_liste[[personne1]][[personne2]]), 1, collaborations_liste[[personne1]][[personne2]] + 1)
+    collaborations_liste[[personne2]][[personne1]] <- ifelse(is.null(collaborations_liste[[personne2]][[personne1]]), 1, collaborations_liste[[personne2]][[personne1]] + 1)
+  }
+    return(collaborations_liste)
+}
+resultat_collaboration <- compter_collaborations(collaboration)
+print(resultat_collaboration)
+
+compter_collaborations_matrice <- function(base) {
+  personnes <- c(etudiants_final[,1])
+  n_personnes <- length(personnes)
+    # Créer une matrice vide pour stocker les compteurs de collaborations
+  matrice_collaborations <- matrix(0, nrow = n_personnes, ncol = n_personnes,
+                                   dimnames = list(personnes, personnes))
+    # Parcourir la base de données et mettre à jour les compteurs de collaborations
+  for (i in 1:nrow(bd_collaborations)) {
+    personne1 <- bd_collaborations[i, "etudiant1"] 
+    personne2 <- bd_collaborations[i, "etudiant2"]
+  # Mettre à jour le compteur de collaborations dans la matrice
+    matrice_collaborations[personne1, personne2] <- matrice_collaborations[personne1, personne2] + 1
+    matrice_collaborations[personne2, personne1] <- matrice_collaborations[personne2, personne1] + 1
+  }
+    return(matrice_collaborations)
+}
+resultat_collaboration_matrice <- compter_collaborations_matrice(bd_collaborations)
+print(resultat_collaboration)
+
+
+#REQUETE qui donne le nombre de lien par paire d'étudiant
+#nb_lien_paire_etudiants <- "
+#SELECT etudiant1,etudiant2 AS nb_lien_paire_etudiants
+#FROM collaborations
+#INNER JOIN collaborations ON etudiant1=etudiant2 
+#ORDER BY nb_lien_par_etudiants;"
+nombre_liens_par_paire_etudiants <- dbGetQuery(con,nb_lien_paire_etudiants)
+head(nb_lien_paire_etudiants)
+
+
+# Transformation de la liste en matrice 156 x 156
+matrice_collaboration <- matrix(sapply(resultat_collaboration,unlist), nrow = 184, ncol = 184)
+
+## FIGURE DU RESEAU DE COLLABORATION
+#code des diapos
+install.packages("igraph")
+library(igraph)
+C <- 0.1   # Assigner une interaction à 10% des paires de noeuds
+S <- 196
+L <- matrix(0, nr = S, nc = S) 
+L[runif(S*S) < C] = 1
+sum(L)
+g <- graph.adjacency(L) # Créer un objet igraph
+plot(g)
 
 #Question recherche possible (associée avec une figure)
 #
@@ -592,23 +593,7 @@ head(cours_test)
 # Est ce que les collaboration sont plus importantes chez les etudiants dun meme programme qu'en dehors des cours obligatoires
 # Est-ce que certains cours ont un plus grand nombre de collaborations que les autres ? (diagramme à bande)
 
-
-
 ##Package a utilisé pour écrire le rapport final 
 #install.packages('rticles')
 #library(rticles)
 
-##Retirer les doublons dans les 3 fichiers csv
-unique(cours)
-cours[!duplicated(cours), ]
-unique(etudiants)
-etudiants[!duplicated(etudiants), ]
-unique(collaboration)
-collaboration[!duplicated(collaboration), ]
-
-##Retirer les duplicata nayant pas les informations (NA)
-#install.packages('dplyr')
-etudiants[duplicated(etudiants), ]
-library(dplyr)
-###etudiantsf <- etudiants %>% slice(-77)
-etudiants <- etudiants[-77,]
