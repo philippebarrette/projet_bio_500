@@ -111,7 +111,7 @@ for(col in names(collaboration)){
   collaboration[,col] <- str_replace_all(collaboration[,col],pattern="fï¿½r",replacement="")
 }
 #for(col in names(collaboration)){
-  collaboration[,col]<- utf8ToInt("\uFFFD")
+  #collaboration[,col]<- utf8ToInt("\uFFFD")
 #}
   #for(col in names(collaboration)){
   #collaboration[,col] <- gsub("\\\\uFFFD", "", collaboration[col], fixed = TRUE)
@@ -120,6 +120,11 @@ for(col in names(collaboration)){
   # collaboration[,col] <- gsub("\uFFFD", "", collaboration[col], fixed = TRUE)
     #}
     #gsub("\uFFFD", "", collaboration[,"etudiant1"], fixed = TRUE)
+  
+for(col in names(collaboration)){
+    collaboration[,col] <- str_replace_all(collaboration[,col],pattern="???",replacement="")
+}
+  
 #CORRECTION DE LA TABLE ÉTUDIANTS
 ##NOMS
 etudiants$prenom_nom <- gsub('yannick_sageau', 'yanick_sageau', etudiants$prenom_nom)
@@ -505,50 +510,25 @@ ORDER BY nb_lien_par_etudiants;"
 nombre_liens_etudiants <- dbGetQuery(con, nb_lien_etudiants)
 head(nombre_liens_etudiants)
 
-#LISTES DES INTERACTIONS ENTRE LES ETUDIANTS
-compter_collaborations <- function(base_de_donnees) {
-  collaborations_liste <- list()
-  
-  # Parcourir la base de données
-  for (i in 1:nrow(collaboration)) {
-    personne1 <- base_de_donnees[i, "etudiant1"] 
-    personne2 <- base_de_donnees[i, "etudiant2"] 
-    
-    # Ajouter les personnes à la liste des collaborations si elles ne sont pas déjà présentes
-    if (!(personne1 %in% names(collaborations_liste))) {
-      collaborations_liste[[personne1]] <- list()
-    }
-    if (!(personne2 %in% names(collaborations_liste))) {
-      collaborations_liste[[personne2]] <- list()
-    }
-    
-    # Mettre à jour les compteurs de collaborations_liste pour les deux personnes
-    collaborations_liste[[personne1]][[personne2]] <- ifelse(is.null(collaborations_liste[[personne1]][[personne2]]), 1, collaborations_liste[[personne1]][[personne2]] + 1)
-    collaborations_liste[[personne2]][[personne1]] <- ifelse(is.null(collaborations_liste[[personne2]][[personne1]]), 1, collaborations_liste[[personne2]][[personne1]] + 1)
-  }
-    return(collaborations_liste)
-}
-resultat_collaboration <- compter_collaborations(collaboration)
-print(resultat_collaboration)
-
-compter_collaborations_matrice <- function(base) {
+#MATRICE DES INTERACTIONS ENTRE LES ETUDIANTS
+compter_collaborations_matrice <- function(collaboration) {
   personnes <- c(etudiants_final[,1])
   n_personnes <- length(personnes)
     # Créer une matrice vide pour stocker les compteurs de collaborations
   matrice_collaborations <- matrix(0, nrow = n_personnes, ncol = n_personnes,
                                    dimnames = list(personnes, personnes))
     # Parcourir la base de données et mettre à jour les compteurs de collaborations
-  for (i in 1:nrow(bd_collaborations)) {
-    personne1 <- bd_collaborations[i, "etudiant1"] 
-    personne2 <- bd_collaborations[i, "etudiant2"]
+  for (i in 1:nrow(etudiants_final)) {
+    personne1 <- collaboration[i, "etudiant1"] 
+    personne2 <- collaboration[i, "etudiant2"]
   # Mettre à jour le compteur de collaborations dans la matrice
     matrice_collaborations[personne1, personne2] <- matrice_collaborations[personne1, personne2] + 1
     matrice_collaborations[personne2, personne1] <- matrice_collaborations[personne2, personne1] + 1
   }
     return(matrice_collaborations)
 }
-resultat_collaboration_matrice <- compter_collaborations_matrice(bd_collaborations)
-print(resultat_collaboration)
+resultat_collaboration_matrice <- compter_collaborations_matrice(collaboration)
+print(resultat_collaboration_matrice)
 
 
 #REQUETE qui donne le nombre de lien par paire d'étudiant
@@ -557,19 +537,93 @@ print(resultat_collaboration)
 #FROM collaborations
 #INNER JOIN collaborations ON etudiant1=etudiant2 
 #ORDER BY nb_lien_par_etudiants;"
-nombre_liens_par_paire_etudiants <- dbGetQuery(con,nb_lien_paire_etudiants)
-head(nb_lien_paire_etudiants)
-
-
-# Transformation de la liste en matrice 156 x 156
-matrice_collaboration <- matrix(sapply(resultat_collaboration,unlist), nrow = 184, ncol = 184)
+#nombre_liens_par_paire_etudiants <- dbGetQuery(con,nb_lien_paire_etudiants)
+#head(nb_lien_paire_etudiants)
 
 ## FIGURE DU RESEAU DE COLLABORATION
+g <- graph.adjacency(resultat_collaboration_matrice, mode = "undirected")
+deg <- degree(g)
+rk <- rank(deg)
+deg <- degree(g)
+size.vec <- (deg/max(deg)) * 50
+# normalize the node sizes using scale()
+size.vec <- scale(size.vec, center = FALSE) * 10
+library(RColorBrewer)
+install.packages("viridis")
+library(viridis)
+col.vec <- viridis(length(rk))
+# set color attribute for each vertex based on its rank
+for (i in 1:vcount(g)) {
+  V(g)$color[i] <- col.vec[rk[i]]
+}
+V(g)$size <- max((5 + deg/2)*2, 10)  # minimum size set to 10
+E(g)$weight <- 1/deg^2
+layout <- layout_with_kk(g, weights = E(g)$weight)
+tryCatch({
+  plot(g, layout=layout, vertex.label=NA, vertex.frame.color=NA, 
+       vertex.color = alpha(V(g)$color, 0.8), vertex.size = size.vec, 
+       edge.arrow.mode=1, edge.arrow.size=0.5)
+}, error = function(e) {
+  cat("Error in plot:", conditionMessage(e), "\n")
+  if (exists("vr")) {
+    cat("Vertices causing the error:", which(is.na(vr)), "\n")
+  }
+})
+
+g <- graph.adjacency(resultat_collaboration_matrice, mode = "undirected")
+deg <- degree(g)
+rk <- rank(deg)
+size.vec <- (deg/max(deg))^2 * 30
+library(RColorBrewer)
+col.vec <- rainbow(length(rk))
+# set color attribute for each vertex based on its rank
+for (i in 1:vcount(g)) {
+  V(g)$color[i] <- col.vec[rk[i]]
+}
+V(g)$size <- ifelse(deg <= median(deg), 15 + deg/2, 25 + deg/2)
+E(g)$weight <- 1/deg^2
+layout <- layout_with_kk(g, weights = E(g)$weight)
+tryCatch({
+  plot(g, layout=layout, vertex.label=NA, vertex.frame.color=NA, 
+       vertex.color = V(g)$color, vertex.size = V(g)$size, 
+       edge.arrow.mode=1, edge.arrow.size=0.5)
+}, error = function(e) {
+  cat("Error in plot:", conditionMessage(e), "\n")
+  if (exists("vr")) {
+    cat("Vertices causing the error:", which(is.na(vr)), "\n")
+  }
+})
+
+has_non_finite <- FALSE
+for (i in 1:156) {
+  for (j in 1:156) {
+    if (is.nan(resultat_collaboration_matrice[i,j]) || is.infinite(resultat_collaboration_matrice[i,j])) {
+      has_non_finite <- TRUE
+      break
+    }
+  }
+  if (has_non_finite) break
+}
+
+if (has_non_finite) {
+  # do something to handle the non-finite values
+} else {
+  # proceed with your code
+}
+
+# Évalue la présence communautés dans le graphe
+wtc = walktrap.community(g)
+# Calcule la modularité à partir des communautés
+modularity(wtc)
+distances(g)
+eigen_centrality(g)$vector
+
+
 #code des diapos
 install.packages("igraph")
 library(igraph)
 C <- 0.1   # Assigner une interaction à 10% des paires de noeuds
-S <- 196
+S <- nrow(resultat_collaboration_matrice)
 L <- matrix(0, nr = S, nc = S) 
 L[runif(S*S) < C] = 1
 sum(L)
