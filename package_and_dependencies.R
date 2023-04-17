@@ -7,3 +7,7 @@ library(tidyverse)
 
 install.packages("dplyr")
 library(dplyr)
+
+##Package a utilisé pour écrire le rapport final 
+#install.packages('rticles')
+#library(rticles)
