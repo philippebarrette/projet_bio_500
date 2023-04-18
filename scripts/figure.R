@@ -1,25 +1,36 @@
 #MATRICE DES INTERACTIONS ENTRE LES ETUDIANTS
-compter_collaborations_matrice <- function(collaboration,personnes) {
-  personnes <- etudiants_final[,1]
-  n_personnes <- length(personnes)
-  collaboration$etudiant1 <- as.integer(collaboration$etudiant1)
-  collaboration$etudiant2 <- as.integer(collaboration$etudiant2)
-  matrice_collaborations <- matrix(0, nrow = n_personnes, ncol = n_personnes,
-                                   dimnames = list(personnes, personnes))
-  for (i in seq_len(nrow(collaboration))) {
-    personne1 <- collaboration$etudiant1[i]
-    personne2 <- collaboration$etudiant2[i]
-    matrice_collaborations[personne1, personne2] <- matrice_collaborations[personne1, personne2] + 1
-    matrice_collaborations[personne2, personne1] <- matrice_collaborations[personne2, personne1] + 1
+etudiants_unique = unique((c(collaboration[,1],collaboration[,2])))
+
+compter_collaborations_matrice <- function(collaboration) {
+  etudiants_unique = unique((c(collaboration[,1],collaboration[,2])))
+  n_personnes <- length(etudiants_unique)
+  print(n_personnes)
+  
+  resultat_collaboration_matrice <- matrix(0, nrow = n_personnes, ncol = n_personnes,
+                                   dimnames = list(etudiants_unique, etudiants_unique))
+  for (i in 1:10) {
+    for (j in nrow(etudiants_unique)){
+      if(etudiants_unique[j] == collaboration[i,1]){
+        personne1 <- j
+        print(etudiants_unique[j],j)
+      if(etudiants_unique[j] == collaboration[i,2]){
+        personne2 <- j  
+        print(etudiants_unique[j],j)
+        
+      }
+    }
+    resultat_collaboration_matrice[personne1, personne2] <- resultat_collaboration_matrice[personne1, personne2] + 1
+    resultat_collaboration_matrice[personne2, personne1] <- resultat_collaboration_matrice[personne2, personne1] + 1
   }
-  if (sum(is.na(matrice_collaborations)) > 0) {
+  if (sum(is.na(resultat_collaboration_matrice)) > 0) {
     warning("NA values found in the collaboration matrix.")
   }
-  return(matrice_collaborations)
+  return(resultat_collaboration_matrice)
+  }
 }
-resultat_collaboration_matrice <- compter_collaborations_matrice(collaboration)
-print(resultat_collaboration_matrice)
+adj_matrice <-compter_collaborations_matrice(collaboration)
 
+rm(resultat_collaboration_matrice)
 
 # Create a data frame of unique student pairs with the number of collaborations
 collab_count <- collaboration %>%
