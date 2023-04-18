@@ -21,6 +21,25 @@ resultat_collaboration_matrice <- compter_collaborations_matrice(collaboration)
 print(resultat_collaboration_matrice)
 
 
+# Create a data frame of unique student pairs with the number of collaborations
+collab_count <- collaboration %>%
+  group_by(etudiant1, etudiant2) %>%
+  summarize(collab = n()) %>%
+  ungroup()
+
+# Create an empty matrix with row and column names
+students <- unique(c(collab_count$etudiant1, collab_count$etudiant2))
+collab_matrix <- matrix(0, nrow = length(students), ncol = length(students),
+                        dimnames = list(students, students))
+
+# Fill in the collaboration counts in the matrix
+for (i in 1:nrow(collab_count)) {
+  collab_matrix[collab_count[i, "etudiant1"], collab_count[i, "etudiant2"]] <- collab_count[i, "collab"]
+  collab_matrix[collab_count[i, "etudiant2"], collab_count[i, "etudiant1"]] <- collab_count[i, "collab"]
+}
+
+
+
 
 ## FIGURE DU RESEAU DE COLLABORATION
 g <- graph.adjacency(resultat_collaboration_matrice, mode = "undirected")
