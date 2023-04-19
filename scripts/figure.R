@@ -42,17 +42,18 @@ adj_matrice <-compter_collaborations_matrice(collaboration)
 g <- graph.adjacency(adj_matrice, mode = "undirected")
 deg <- degree(g)
 rk <- rank(deg)
-deg <- degree(g)
 min_size <- 5
+size.vec <- rep(1, vcount(g))  # set initial size of all nodes to 1
+size.vec <- size.vec / max(size.vec) * 10
 size.vec <- scale(size.vec, center = FALSE) * 10
 col.vec <- hsv(seq(0, 1, length.out=length(rk)), 0.8, 0.8)[rk]
 # set color attribute for each vertex based on its rank
 for (i in 1:vcount(g)) {
   V(g)$color[i] <- col.vec[i]
 }
-V(g)$size <- 10  # fixed node size of 10
-E(g)$weight <- 1/deg^2
-layout <- layout_with_kk(g, weights = E(g)$weight)
+V(g)$size <- size.vec
+E(g)$weight <- 1 / (deg^2)
+layout <- layout_with_kk(g, weights = E(g)$weight, maxiter = 1000)
 tryCatch({
   plot(g, layout=layout, vertex.label=NA, vertex.frame.color=NA, 
        vertex.color = V(g)$color, vertex.size = V(g)$size, 
