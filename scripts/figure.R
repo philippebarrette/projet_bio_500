@@ -39,6 +39,7 @@ adj_matrice <-compter_collaborations_matrice(collaboration)
 #rm(resultat_collaboration_matrice)
 
 ## FIGURE DU RESEAU DE COLLABORATION
+
 g <- graph.adjacency(adj_matrice, mode = "undirected")
 deg <- degree(g)
 rk <- rank(deg)
@@ -50,13 +51,13 @@ col.vec <- hsv(seq(0, 1, length.out=length(rk)), 0.8, 0.8)[rk]
 # set color attribute for each vertex based on its rank
 for (i in 1:vcount(g)) {
   V(g)$color[i] <- col.vec[i]
+  print(sprintf("Vertex %d, rank %d, color %s", i, rk[i], col.vec[i]))
 }
-V(g)$size <- size.vec
-E(g)$weight <- 1 / (deg^2)
+E(g)$weight <- rep(1, ecount(g)) / (deg^2)
 layout <- layout_with_kk(g, weights = E(g)$weight, maxiter = 1000)
 tryCatch({
   plot(g, layout=layout, vertex.label=NA, vertex.frame.color=NA, 
-       vertex.color = V(g)$color, vertex.size = V(g)$size, 
+       vertex.color = V(g)$color, vertex.size = size.vec, 
        arrow.mode = 1, edge.arrow.size=0.5)
 }, error = function(e) {
   cat("Error in plot:", conditionMessage(e), "\n")
