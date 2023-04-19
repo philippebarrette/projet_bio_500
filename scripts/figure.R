@@ -2,63 +2,44 @@
 compter_collaborations_matrice <- function(collaboration) {
   etudiants_unique = unique((c(collaboration[,1],collaboration[,2])))
   n_personnes <- length(etudiants_unique)
-  print(n_personnes)
-  
   resultat_collaboration_matrice <- matrix(0, nrow = n_personnes, ncol = n_personnes,
                                    dimnames = list(etudiants_unique, etudiants_unique))
-  for (i in 1:nrow(collaboration)) {
-         for (j in 1:length(etudiants_unique)){
-          print(etudiants_unique[j])
-        
-          if(etudiants_unique[j] == collaboration[i,1]){
-          personne1 <- j
-          print(etudiants_unique[j],j) 
-          resultat_collaboration_matrice[personne1, j] <- resultat_collaboration_matrice[personne1, j] + 1
-          resultat_collaboration_matrice[j, personne1] <- resultat_collaboration_matrice[j, personne1] + 1
-        
-          if(etudiants_unique[j] == collaboration[i,2]){
-          personne2 <- j  
-          resultat_collaboration_matrice[personne1, j] <- resultat_collaboration_matrice[personne1, j] + 1
-          resultat_collaboration_matrice[j, personne1] <- resultat_collaboration_matrice[j, personne1] + 1
+  for (i in 1:n_personnes){
+      print(etudiants_unique[i])
+    for (j in 1:nrow(collaboration)) {
+      #print(collaboration[j,1:10])
+      #print(collaboration[j,2:10])
+      if (etudiants_unique[i] == collaboration[j,1]){
+        for (k in 1:n_personnes){
+          if (collaboration[j,2] == etudiants_unique[k]){
+            break
+          }
+        }
+        resultat_collaboration_matrice[i, k] <- resultat_collaboration_matrice[i, k] + 1
+        resultat_collaboration_matrice[k, i] <- resultat_collaboration_matrice[k, i] + 1
+      }
+     
+      if (etudiants_unique[i] == collaboration[j,2]){
+        for (k in 1:n_personnes){
+          if (collaboration[j,1] == etudiants_unique[k]){
+            break
+          }
+        }
+        resultat_collaboration_matrice[i, k] <- resultat_collaboration_matrice[i, k] + 1
+        resultat_collaboration_matrice[k, i] <- resultat_collaboration_matrice[k, i] + 1 
       }
     }
-  }
-  if (sum(is.na(resultat_collaboration_matrice)) > 0) {
+    if (sum(is.na(resultat_collaboration_matrice)) > 0) {
     warning("NA values found in the collaboration matrix.")
+    }
   }
   return(resultat_collaboration_matrice)
-  }
 }
 adj_matrice <-compter_collaborations_matrice(collaboration)
-
-
-
-
-
-rm(resultat_collaboration_matrice)
-
-# Create a data frame of unique student pairs with the number of collaborations
-collab_count <- collaboration %>%
-  group_by(etudiant1, etudiant2) %>%
-  summarize(collab = n()) %>%
-  ungroup()
-
-# Create an empty matrix with row and column names
-students <- unique(c(collab_count$etudiant1, collab_count$etudiant2))
-collab_matrix <- matrix(0, nrow = length(students), ncol = length(students),
-                        dimnames = list(students, students))
-
-# Fill in the collaboration counts in the matrix
-for (i in 1:nrow(collab_count)) {
-  collab_matrix[collab_count[i, "etudiant1"], collab_count[i, "etudiant2"]] <- collab_count[i, "collab"]
-  collab_matrix[collab_count[i, "etudiant2"], collab_count[i, "etudiant1"]] <- collab_count[i, "collab"]
-}
-
-
-
+#rm(resultat_collaboration_matrice)
 
 ## FIGURE DU RESEAU DE COLLABORATION
-g <- graph.adjacency(resultat_collaboration_matrice, mode = "undirected")
+g <- graph.adjacency(adj_matrice, mode = "undirected")
 deg <- degree(g)
 rk <- rank(deg)
 deg <- degree(g)
