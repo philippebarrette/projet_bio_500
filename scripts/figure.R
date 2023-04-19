@@ -1,6 +1,4 @@
 #MATRICE DES INTERACTIONS ENTRE LES ETUDIANTS
-etudiants_unique = unique((c(collaboration[,1],collaboration[,2])))
-
 compter_collaborations_matrice <- function(collaboration) {
   etudiants_unique = unique((c(collaboration[,1],collaboration[,2])))
   n_personnes <- length(etudiants_unique)
@@ -8,19 +6,22 @@ compter_collaborations_matrice <- function(collaboration) {
   
   resultat_collaboration_matrice <- matrix(0, nrow = n_personnes, ncol = n_personnes,
                                    dimnames = list(etudiants_unique, etudiants_unique))
-  for (i in 1:10) {
-    for (j in nrow(etudiants_unique)){
-      if(etudiants_unique[j] == collaboration[i,1]){
-        personne1 <- j
-        print(etudiants_unique[j],j)
-      if(etudiants_unique[j] == collaboration[i,2]){
-        personne2 <- j  
-        print(etudiants_unique[j],j)
+  for (i in 1:nrow(collaboration)) {
+         for (j in 1:length(etudiants_unique)){
+          print(etudiants_unique[j])
         
+          if(etudiants_unique[j] == collaboration[i,1]){
+          personne1 <- j
+          print(etudiants_unique[j],j) 
+          resultat_collaboration_matrice[personne1, j] <- resultat_collaboration_matrice[personne1, j] + 1
+          resultat_collaboration_matrice[j, personne1] <- resultat_collaboration_matrice[j, personne1] + 1
+        
+          if(etudiants_unique[j] == collaboration[i,2]){
+          personne2 <- j  
+          resultat_collaboration_matrice[personne1, j] <- resultat_collaboration_matrice[personne1, j] + 1
+          resultat_collaboration_matrice[j, personne1] <- resultat_collaboration_matrice[j, personne1] + 1
       }
     }
-    resultat_collaboration_matrice[personne1, personne2] <- resultat_collaboration_matrice[personne1, personne2] + 1
-    resultat_collaboration_matrice[personne2, personne1] <- resultat_collaboration_matrice[personne2, personne1] + 1
   }
   if (sum(is.na(resultat_collaboration_matrice)) > 0) {
     warning("NA values found in the collaboration matrix.")
@@ -29,6 +30,10 @@ compter_collaborations_matrice <- function(collaboration) {
   }
 }
 adj_matrice <-compter_collaborations_matrice(collaboration)
+
+
+
+
 
 rm(resultat_collaboration_matrice)
 
