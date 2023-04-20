@@ -71,6 +71,7 @@ modularity(wtc)
 distances(g)
 eigen_centrality<- eigen_centrality(g)$vector
 
+## HISTOGRAMME DU NOMBRE DE COLLAB POUR CHAQUE ETUDIANT
 rk_hist<-rank(nombre_liens_etudiants)
 h<-hist(nombre_liens_etudiants$nb_lien_par_etudiants,breaks = seq(from=0,
 to=600, by=50), col="white", border="black", lwd=2, main = "Histogramme des liens de collaboration",
@@ -88,6 +89,7 @@ for (i in 1:length(h$counts)) {
   polygon(x, y, col = cols[i], border = "black", lwd = 2)
 }
 
+## HISTOGRAMME DU NB DE COLLAB POUR CHAQUE COURS
 rk_hist<-rank(nombre_collab_cours)
 h2<-hist(nombre_collab_cours$nombre_collaboration_cours,breaks = seq(from=0,
 to=6000, by=300), col="white", border="black", lwd=2, main = "Histogramme du nombre de collaborations par cours",
