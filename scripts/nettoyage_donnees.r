@@ -11,7 +11,7 @@ for(tab in tabNames){
   tabFiles <- allFiles[grep(tab, allFiles)]
     for(groupe in 1:nbGroupe){
     tabName <- paste0(tab, "_",groupe)
-        ficher <- paste0("D:/projet_bio_500/data/", tabFiles[groupe])
+        ficher <- paste0(data_directory, tabFiles[groupe])
         L <- readLines(ficher, n = 1)
     separateur <- ifelse(grepl(';', L), ';', ',')
     assign(tabName, read.csv(ficher, sep = separateur, stringsAsFactors = FALSE,encoding="UTF-8"))
