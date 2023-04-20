@@ -1,0 +1,28 @@
+---
+title: "Rapport"
+
+author:
+  - name: Philippe Barrette
+    affiliation: a
+  - name: Denya Bérard
+    affiliation: a
+  - name: Marie-Christine Arseneau
+    affiliation: a
+  - name: Roxanne Bernier
+    affiliation: a
+
+date: "2023-04-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+a = rnorm(1000,1,1)
+`a = rnorm(1000,1,1)`
+`hist(a)`
+b = hist(a)
+
+```{r}
+plot(b)
+```

@@ -1,7 +1,15 @@
-
 ---
 title: "Rapport collaboration"
-author: "Denya, Marie-Christine, Philippe et Roxanne"
+author:
+  - name: Philippe Barrette
+    affiliation: a
+  - name: Denya Bérard
+    affiliation: a
+  - name: Marie-Christine Arseneau
+    affiliation: a
+  - name: Roxanne Bernier
+    affiliation: a
+    
 date: "2023-04-20"
 output: html_document
 ---
