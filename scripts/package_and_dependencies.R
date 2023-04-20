@@ -7,6 +7,7 @@ library(tidyverse)
 
 install.packages("dplyr")
 library(dplyr)
+install.packages('Rmarkdown'))
 
 ##Package a utilisé pour écrire le rapport final 
 #install.packages('rticles')
@@ -20,3 +21,4 @@ library(igraph)
 library(RColorBrewer)
 install.packages("viridis")
 library(viridis)
+
