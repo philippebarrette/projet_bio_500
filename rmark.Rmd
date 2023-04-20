@@ -1,5 +1,5 @@
 ---
-title: "Rapport collaboration"
+title: "Rapport collaboration - changer le titre"
 author:
   - name: Philippe Barrette
     affiliation: a
@@ -9,6 +9,14 @@ author:
     affiliation: a
   - name: Roxanne Bernier
     affiliation: a
+    
+abstract: | 
+  blablabla
+    
+keywords:
+  - Collaborations
+  - Réseau écologique
+  - Travaux d'équipe
     
 date: "2023-04-20"
 output: html_document
