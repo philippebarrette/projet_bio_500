@@ -20,7 +20,7 @@ for(tab in tabNames){
 
 #CORRECTION DES DONNÉES DES TABLES DE COLLABORATION
 collaboration <- collaboration[collaboration$etudiant1 != "" & collaboration$etudiant2 != "", ]
-collaboration_7 <- subset(collab====oration_7,select=(-(5:9)))
+collaboration_7 <- subset(collaboration_7,select=(-(5:9)))
 collaboration_4 <- collaboration_4[-c(which(collaboration_4$etudiant1 == "")),]
 collaboration_6 <- subset(collaboration_6[1:nrow(collaboration_6),2:5])
 
@@ -31,6 +31,9 @@ for (i in 1:nrow(collaboration_4)) {
     collaboration_4[i,4][collaboration_4[i,4]==""] <- "E2022"
   }
 }
+collaboration <-collaboration[-c(which(collaboration$etudiant1==collaboration$etudiant2)),]
+
+
 
 #CORRECTION DES DONNÉES DES TABLES DE COURS
 cour_5 <-subset(cour_5[-c(28), ])
@@ -175,6 +178,9 @@ cours_ob <- c("BCL102","BCM104","BCM113","BCM115","BIO104","BIO108","BIO109"
 ,"ECL403","ECL404","ECL510","ECL515","ECL516","ECL527","ECL604","ECL610"
 ,"ECL611","ECL615","GNT302","MCB100","MCB101","PSL105","TSB302","ZOO105"
 ,"ZOO106","ZOO306","ZOO307")
+
+cours[cours$sigle=="ECL515","credits"]  <- 2
+cours[cours$sigle=="BIO109","credits"]  <- 1
 
                                   #AJOUTER ANNOTATION!!!
 liste_cours <- cours[,1]
