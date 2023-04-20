@@ -39,22 +39,18 @@ adj_matrice <-compter_collaborations_matrice(collaboration)
 #rm(resultat_collaboration_matrice)
 
 ## FIGURE DU RESEAU DE COLLABORATION
-
 g <- graph.adjacency(adj_matrice, mode = "undirected")
 deg <- degree(g)
-rk <- rank(deg)
 min_size <- 5
-size.vec <- rep(1, vcount(g))  # set initial size of all nodes to 1
-size.vec <- size.vec / max(size.vec) * 10
-size.vec <- scale(size.vec, center = FALSE) * 10
+size.vec <- deg / max(deg) * 20
 col.vec <- hsv(seq(0, 1, length.out=length(rk)), 0.8, 0.8)[rk]
 # set color attribute for each vertex based on its rank
 for (i in 1:vcount(g)) {
   V(g)$color[i] <- col.vec[i]
-  print(sprintf("Vertex %d, rank %d, color %s", i, rk[i], col.vec[i]))
+  print(sprintf("Vertex %d, rank %s, color %s", i, rk[i], col.vec[i]))
 }
 E(g)$weight <- rep(1, ecount(g)) / (deg^2)
-layout <- layout_with_kk(g, weights = E(g)$weight, maxiter = 1000)
+layout <- layout_with_fr(g,area = vcount(g))
 tryCatch({
   plot(g, layout=layout, vertex.label=NA, vertex.frame.color=NA, 
        vertex.color = V(g)$color, vertex.size = size.vec, 

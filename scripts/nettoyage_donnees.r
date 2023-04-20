@@ -20,7 +20,7 @@ for(tab in tabNames){
 
 #CORRECTION DES DONNÉES DES TABLES DE COLLABORATION
 collaboration <- collaboration[collaboration$etudiant1 != "" & collaboration$etudiant2 != "", ]
-collaboration_7 <- subset(collaboration_7,select=(-(5:9)))
+collaboration_7 <- subset(collab====oration_7,select=(-(5:9)))
 collaboration_4 <- collaboration_4[-c(which(collaboration_4$etudiant1 == "")),]
 collaboration_6 <- subset(collaboration_6[1:nrow(collaboration_6),2:5])
 
