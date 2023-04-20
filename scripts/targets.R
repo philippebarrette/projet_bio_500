@@ -1,12 +1,8 @@
-library(targets)
-install.packages(target)
 render("mon_rmarkdown.Rmd")
 rmarkdown::render
-
-
-print(utils::getSrcDirectory(function(){}))
+print(utils::getSrcdirectory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+Directory(function(){}))
 print(utils::getSrcFilename(function(){}, full.names = TRUE))
-directory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 library(targets)
 source("analyse.R")

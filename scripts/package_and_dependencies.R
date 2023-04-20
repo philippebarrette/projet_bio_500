@@ -7,7 +7,12 @@ library(tidyverse)
 
 install.packages("dplyr")
 library(dplyr)
-install.packages('Rmarkdown'))
+
+install.packages("rmarkdown")
+library(rmarkdown)
+
+install.packages("targets")
+library(targets)
 
 ##Package a utilisé pour écrire le rapport final 
 #install.packages('rticles')

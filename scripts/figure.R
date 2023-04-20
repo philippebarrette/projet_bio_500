@@ -97,8 +97,10 @@ for (i in 1:length(h2$counts)) {
   y <- c(0, 0, h2$counts[i], h2$counts[i])
   polygon(x, y, col = cols2[i], border = "black", lwd = 2)
 }
-dir.create("figures")
-setwd("figures")
+figure_directory <- gsub("/scripts", "/figure/",directory)
+reseau<-paste(figure_directory,"g",sep="")
+collab1<-paste(figure_directory,"h",sep="")
+collab2<-paste(figure_directory,"h2",sep="")
 png(filename = "g.png", width = 800, height = 600, units = "px", res = 300)
 png(filename = "h.png", width = 800, height = 600, units = "px", res = 300)
 png(filename = "h2.png", width = 800, height = 600, units = "px", res = 300)
