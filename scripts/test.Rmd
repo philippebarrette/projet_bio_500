@@ -1,7 +1,17 @@
 ---
-title: "test"
-author: "PB"
-date: "2023-03-30"
+title: "Rapport"
+
+author:
+  - name: Philippe Barrette
+    affiliation: a
+  - name: Denya Bérard
+    affiliation: a
+  - name: Marie-Christine Arseneau
+    affiliation: a
+  - name: Roxanne Bernier
+    affiliation: a
+
+date: "2023-04-22"
 output: html_document
 ---
 
