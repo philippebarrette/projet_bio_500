@@ -16,7 +16,6 @@ compter_collaborations_matrice <- function(collaboration) {
           }
         }
         resultat_collaboration_matrice[i, k] <- resultat_collaboration_matrice[i, k] + 1
-        resultat_collaboration_matrice[k, i] <- resultat_collaboration_matrice[k, i] + 1
       }
      
       if (etudiants_unique[i] == collaboration[j,2]){
@@ -26,7 +25,6 @@ compter_collaborations_matrice <- function(collaboration) {
           }
         }
         resultat_collaboration_matrice[i, k] <- resultat_collaboration_matrice[i, k] + 1
-        resultat_collaboration_matrice[k, i] <- resultat_collaboration_matrice[k, i] + 1 
       }
     }
     if (sum(is.na(resultat_collaboration_matrice)) > 0) {
@@ -42,7 +40,9 @@ adj_matrice <-compter_collaborations_matrice(collaboration)
 g <- graph.adjacency(adj_matrice, mode = "undirected")
 deg <- degree(g)
 min_size <- 5
-size.vec <- deg / max(deg) * 20
+size.vec <- deg / max(deg) * 15
+threshold <- 3
+size.vec[size.vec < threshold] <- size.vec[size.vec < threshold] * 8
 col.vec <- hsv(seq(0, 1, length.out=length(rk)), 0.8, 0.8)[rk]
 # set color attribute for each vertex based on its rank
 for (i in 1:vcount(g)) {
