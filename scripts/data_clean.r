@@ -1,36 +1,8 @@
----
-title: "Rapport collaboration"
-author:
-  - name: Philippe Barrette
-    affiliation: a
-  - name: Denya Bérard
-    affiliation: a
-  - name: Marie-Christine Arseneau
-    affiliation: a
-  - name: Roxanne Bernier
-    affiliation: a
-    
-date: "2023-04-20"
-output: html_document
----
+#Denya Berard
+#Marie-Christine Arsenault  
+#Philippe Barrette
+#Roxanne Bernier
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-**Resumé**
-
-La collaboration est une forme de travail où l'énergie est mise à profit à l'aide de plusieurs personnes permettant l'atteinte d'un but commun qui sera favorable pour tous. C'est cette forme de travail qui sera décortiquée dans ce travail à l'aide des différentes collaborations que les élèves en Baccalauréat en Écologie de l'Université de Sherbrooke dans le cadre du cours BIO500 ont eu à avoir tout au long de leur cheminement. Ce travail vise à comprendre à quoi ressemble le réseau de collaboration, combien de collaborations que chacun des étudiants ont dû avoir pour l'obtention de leur diplôme et suit-elle une tendance quelconque et finalement quel cours possède le plus grand nombre de collaborations recensées. Il a été démontré à l'aide des données obtenues que..
-
-**Introduction**
-
-La collaboration est une forme d\'aide où plusieurs personnes mettent en œuvre ces compétences pour l\'atteinte d\'un but commun précis, et ce dans plusieurs sphères. En écologie, il a été démontré à plusieurs reprises que la collaboration à son lot d\'avantages concrets dans plusieurs sphères, soit dans le milieu animal, végétal et même chez l\'humain. La recherche en écologie, nécessite l\'apport de plusieurs connaissances adjacentes afin d\'obtenir des résultats plus fiables vu la complexité de la discipline (Goring et al., 2014). C\'est principalement cette interactions qui sera décortiquée dans le cadre du cours Méthodologie computationnelle donnés aux étudiants finissants au Baccalauréat en Écologie à l\'Université de Sherbrooke. En effet, une collecte de données à été réalisée afin d\'évaluer la collaboration de chacun des étudiants présents dans ce cours avec d\'autres élèves tout au long de leur cheminement académique. Le nombre total de collaboration pour chaque étudiant suit-elle une tendance particulière? Quels cours ont un plus nombre de collaborations? Et à quoi ressemble le réseau de collaboration au total sont des questions qui seront répondu dans ce présent rapport.
-
-**Méthode et résultats**
-
-En généralité, une collecte de données à été réalisée en sondant l\'entièreté des élèves présents dans le cours méthodes computationnelles au Baccalauréat en Écologie en hiver 2023. Différents fichiers ont dû être dûment remplis afin d\'éviter les oublis généralement réalisés par les étudiants. Ces fichiers avaient pour but de sonder les élèves à savoir les différentes informations sur l\'entièreté des cours suivis pour l\'obtention de leur diplome de premier cycle à l\'université, leurs informations personnels pour obtenir un historique de base des différents étudiants dans le cours et le dernier fichier avait pour but l\'énumération de l\'entièreté des collaborations que les étudiants ont eu à avoir pour les différents travaux réalisés dans les différents cours. 
-
-```{r}
 #DIRECTORY SETTING
 data_directory <- gsub("/scripts", "/data/",directory)
 print(utils::getSrcDirectory(function(){}))
@@ -47,7 +19,7 @@ file.path()
 library(RSQLite)
 #library(RSQLite, dependencies= TRUE)
 
-#INDEXATION DES DONNÉES
+#INDEXATION DES DONN�ES
 allFiles <- dir(data_directory)
 tabNames <- c('collaboration', 'cour', 'etudiant')
 nbGroupe <- length(grep(tabNames[1], allFiles))
@@ -63,16 +35,11 @@ for(tab in tabNames){
     }
 }
 
-```
-
-Ces trois fichiers ont dû être examinés en profondeur afin d\'éliminer toutes les incohérences, les erreurs de typographie, les doublons et les autres erreurs présentes. 
-
-```{r}
 #EFFACEMENT DES OBJETS
 rm(list = c('allFiles', 'tab', 'tabFiles', 'tabName', 'ficher', 'groupe'))
 #rm(list = ls(all = TRUE))
 
-#CORRECTION DES DONNÉES DES TABLES DE COLLABORATION
+#CORRECTION DES DONN�ES DES TABLES DE COLLABORATION
 collaboration_7 <- subset(collaboration_7,select=(-(5:9)))
 collaboration_4 <- subset(collaboration_4[-c(109,290:292,431), ])
 
@@ -83,7 +50,7 @@ for (i in 1:nrow(collaboration_4)) {
   }
 }
 
-#CORRECTION DES DONNÉES DES TABLES DE COURS
+#CORRECTION DES DONN�ES DES TABLES DE COURS
 cour_5 <-subset(cour_5[-c(28), ])
 cour_5 <- subset(cour_5,select=(-(4:9)))
 cour_6 <-subset(cour_6[-c(13:235), ])
@@ -92,7 +59,7 @@ cour_7 <- subset(cour_7,select=(-(4:9)))
 cour_10 <- subset(cour_10[-c(25:29), ])
 names(cour_4)[names(cour_4) =="?..sigle"]<-"sigle"
 
-#CORRECTION DES DONNÉES DES TABLES D'ÉTUDIANTS
+#CORRECTION DES DONN�ES DES TABLES D'�TUDIANTS
 etudiant_3 <- subset(etudiant_3,select=(-(9:9)))
 etudiant_4 <- subset(etudiant_4,select=(-(9:9)))
 etudiant_5 <- subset(etudiant_5,select=(-(9:9)))
@@ -101,12 +68,12 @@ etudiant_9 <- subset(etudiant_9,select=(-(9:9)))
 etudiant_6 <- subset(etudiant_6[-c(52:59), ])
 names(etudiant_4)[names(etudiant_4) =="prenom_nom."]<-"prenom_nom"
 
-#CRÉATION DES 3 TABLES FINALES
+#CR�ATION DES 3 TABLES FINALES
 etudiants <- rbind(etudiant_1, etudiant_2, etudiant_3, etudiant_4, etudiant_5,etudiant_6,etudiant_7,etudiant_8,etudiant_9,etudiant_10)
 cours <-rbind(cour_1, cour_2, cour_3, cour_4, cour_5,cour_6,cour_7,cour_8,cour_9,cour_10)
 collaboration <-rbind(collaboration_1, collaboration_2, collaboration_3, collaboration_4, collaboration_5,collaboration_6,collaboration_7,collaboration_8,collaboration_9,collaboration_10)
 
-#DESTRUCTION DES DONNÉES DUPLIQUÉES
+#DESTRUCTION DES DONN�ES DUPLIQU�ES
 cours<-cours[!duplicated(cours), ]
 etudiants<-etudiants[!duplicated(etudiants), ]
 collaboration<-collaboration[!duplicated(collaboration), ]
@@ -135,10 +102,10 @@ for(col in names(collaboration)){
   collaboration[,col] <- str_replace_all(collaboration[,col],pattern="<a0>",replacement="")
 }
 for(col in names(collaboration)){
-  collaboration[,col] <- str_replace_all(collaboration[,col],pattern="ï¿½",replacement="")
+  collaboration[,col] <- str_replace_all(collaboration[,col],pattern="�",replacement="")
 }
 
-#CORRECTION DE LA TABLE ÉTUDIANTS
+#CORRECTION DE LA TABLE �TUDIANTS
 ##NOMS
 etudiants$prenom_nom <- gsub('yannick_sageau', 'yanick_sageau', etudiants$prenom_nom)
 etudiants$prenom <- gsub('yannick', 'yanick', etudiants$prenom)
@@ -245,14 +212,14 @@ library(dplyr)
 for(col in names(etudiants)){
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="\\s",replacement="")
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="<a0>",replacement="")
-  etudiants[,col] <- str_replace_all(etudiants[,col],pattern="ï¿½",replacement="")
+  etudiants[,col] <- str_replace_all(etudiants[,col],pattern="�",replacement="")
   etudiants[,col] <- str_replace_all(etudiants[,col],pattern="???",replacement="")
 }
 
 #for(col in names(etudiants)){
   etudiants[,col] <- str_replace_all(pattern="\\s",etudiants[,col],replacement="")
   etudiants[,col] <- str_replace_all(pattern="<a0>",etudiants[,col],replacement="")
-  etudiants[,col] <- str_replace_all(pattern="ï¿½",etudiants[,col],replacement="")
+  etudiants[,col] <- str_replace_all(pattern="�",etudiants[,col],replacement="")
   etudiants[,col] <- str_replace_all(pattern="???",etudiants[,col],replacement="")
   }
 #
@@ -330,7 +297,7 @@ for(input in 1:nrow(etudiants_intermediaire)){
     }
 }
 
-##Correction de la table collaboration (gÃ©nÃ©rateur d'erreurs##
+##Correction de la table collaboration (générateur d'erreurs##
 ref_nom <- etudiants_final$prenom_nom
 nom_ver <- collaboration$etudiant1
 correction <-sapply(nom_ver, function(x) x %in% ref_nom)
@@ -385,7 +352,7 @@ collaboration$etudiant1 <- gsub('sara_jade_lamontagne', 'sara_jade_lamontagne', 
 collaboration$etudiant1 <- gsub('philippe_leonard_dufour', 'philippe_leonard-dufour', collaboration$etudiant1)
 collaboration$etudiant1 <- gsub('philippe_bourrassa', 'philippe_bourassa', collaboration$etudiant1)
 
-##Correction de la table collaboration (gÃ©nÃ©rateur d'erreurs##
+##Correction de la table collaboration (générateur d'erreurs##
 ref_nom <- etudiants_final$prenom_nom
 nom_ver <- collaboration$etudiant2
 correction <-sapply(nom_ver, function(x) x %in% ref_nom)
@@ -409,33 +376,107 @@ collaboration$etudiant2 <- gsub('ihuoma_elsie-ebere', 'ihuoma_elsie_ebere', coll
 collaboration$etudiant2 <- gsub('amelie_harbeck_bastien', 'amelie_harbeck-bastien', collaboration$etudiant2)
 collaboration$etudiant2 <- gsub('francis_bolly', 'francis_boily', collaboration$etudiant2)
 collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', collaboration$etudiant2)
-```
+##En post-traitement sur R :
+#Cr�er la base de donn�es
+#Injecter les donn�es
+#Faire les requ�tes suivantes :
+## Nombre de liens par �tudiant
+#D�compte de liens par paire d'�tudiants
+#Enregistrer le r�sultat des requ�tes dans un fichier csv
+#Calculer le nombre d'�tudiants, le nombre de liens et la connectance du r�seau
+#Calculer le nombre de liens moyens par �tudiant et la variance
+#�crire un script qui r�alise les �tapes 0-3 d'un bloc
 
-\
+###Enregistrer en CSV les tables corrigees
+#set
+write_csv(collaboration, "data/tbl_collaborations.csv")
+write_csv(etudiants_final, "data/tbl_etudiants.csv")
+write_csv(cours_final, "data/tbl_cours.csv")
+  
+library(RSQLite)
+con <- dbConnect(SQLite(), dbname="data_directory")
+tbl_cours <- "
+CREATE TABLE cours (
+  sigle         VARCHAR(6),
+  optionnel     VARCHAR(5),
+  credits       VARCHAR(1),
+  PRIMARY KEY (cours)
+);"
 
-\
+dbSendQuery(con,"DROP TABLE cours;")
+
+dbSendQuery(con, tbl_cours)
+
+tbl_etudiants <- "
+CREATE TABLE ETUDIANTS (
+  prenom_nom                  VARCHAR(50),
+  prenom                      VARCHAR(40),
+  nom                          VARCHAR(200),
+  region_adminisatrative       VARCHAR(40),
+  regime_coop                   BOLEAN,
+  formation_prealable           VARCHAR(40),
+  annee_debut                   VARCHAR(5),
+  programme                     INTEGER,
+  PRIMARY KEY (prenom_nom)
+);"
+dbSendQuery(con, tbl_etudiants)
+
+tbl_collaborations <- "
+CREATE TABLE collaborations (
+  etudiant1      VARCHAR(50),
+  etudiant2      VARCHAR(40),
+  sigle        VARCHAR(6),
+  PRIMARY KEY (etudiant1,etudiant2)
+);"
+dbSendQuery(con, tbl_collaborations)
+<<<<<<< HEAD
+#faire setwd() avec le directory 
+=======
+
+bd_collaborations  <-read.csv(file=name_tbl_collab)
+bd_etudiants  <-read.csv(file=name_tbl_etudiants)
+bd_cours  <-read.csv(file=name_tbl_cours)
+
+SQL_tbl_cours <- dbWriteTable(con, append = TRUE, name = "cours", value = bd_cours, row.names = FALSE)
+SQL_tbl_etudiants <-dbWriteTable(con, append = TRUE, name = "etudiants", value = bd_etudiants, row.names = FALSE)
+SQL_tbl_collaborations <-dbWriteTable(con, append = TRUE, name = "collaborations", value = bd_collaborations, row.names = FALSE)
+
+library(RSQLite)
+rsqliteVersion()
+RSQLite::dbConnect()
+connexion<-dbConnect(RSQLite::SQLite(), dbname = "tbl_collaboration")
+
+sql_requete <- "
+SELECT sigle, optionnel, credits
+  FROM cours
+;"
+cours_test <- dbGetQuery(con, sql_requete)
+head(cours_test)
+
+#Question recherche possible: cest quoi la proportion de collaboration r�alis�e en dehors du bac en ecologie
+#Est ce que certain etudiants occupe plus de place dans reseau de collaboration
+#Est ce que les collaboration sont plus importantes chez les etudiants dun meme programme qu'en dehors des cours obligatoires
+
+##Package a utilis� pour �crire le rapport final 
+#install.packages('rticles')
+#library(rticles)
+
+##Retirer les doublons dans les 3 fichiers csv
+unique(cours)
+cours[!duplicated(cours), ]
+unique(etudiants)
+etudiants[!duplicated(etudiants), ]
+unique(collaboration)
+collaboration[!duplicated(collaboration), ]
+
+##Retirer les duplicata nayant pas les informations (NA)
+#install.packages('dplyr')
+etudiants[duplicated(etudiants), ]
+library(dplyr)
+###etudiantsf <- etudiants %>% slice(-77)
+etudiants <- etudiants[-77,]
 
 
-\
 
-\
 
-R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
