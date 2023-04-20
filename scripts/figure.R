@@ -3,7 +3,7 @@ compter_collaborations_matrice <- function(collaboration) {
   etudiants_unique = unique((c(collaboration[,1],collaboration[,2])))
   n_personnes <- length(etudiants_unique)
   resultat_collaboration_matrice <- matrix(0, nrow = n_personnes, ncol = n_personnes,
-                                   dimnames = list(etudiants_unique, etudiants_unique))
+            dimnames = list(etudiants_unique, etudiants_unique))
   for (i in 1:n_personnes){
       print(etudiants_unique[i])
     for (j in 1:nrow(collaboration)) {
@@ -32,12 +32,14 @@ compter_collaborations_matrice <- function(collaboration) {
     }
   }
   return(resultat_collaboration_matrice)
+  print(unique(diag(adj_matrice)))
 }
 adj_matrice <-compter_collaborations_matrice(collaboration)
 #rm(resultat_collaboration_matrice)
 
 ## FIGURE DU RESEAU DE COLLABORATION
 g <- graph.adjacency(adj_matrice, mode = "undirected")
+rk <- rank(deg)
 deg <- degree(g)
 min_size <- 5
 size.vec <- deg / max(deg) * 15
@@ -71,8 +73,9 @@ eigen_centrality<- eigen_centrality(g)$vector
 
 rk_hist<-rank(nombre_liens_etudiants)
 h<-hist(nombre_liens_etudiants$nb_lien_par_etudiants,breaks = seq(from=0,
-to=100, by=10), col="white", border="black", lwd=2, main = "Histogramme des liens de collaboration",
-xlim = c(0, 100), xlab = "Nombre de collaboration",ylab = "Nombre d'étudiants")
+to=600, by=50), col="white", border="black", lwd=2, main = "Histogramme des liens de collaboration",
+xlim = c(0, 600), xlab = "Nombre de collaboration",
+ylab = "Nombre d'étudiants")
 #rank_counts<-table(rk_hist)
 #for (i in unique(rk_hist)) {
  # text(i, rank_counts[i], labels=i, pos=3)
@@ -87,8 +90,8 @@ for (i in 1:length(h$counts)) {
 
 rk_hist<-rank(nombre_collab_cours)
 h2<-hist(nombre_collab_cours$nombre_collaboration_cours,breaks = seq(from=0,
-to=600, by=30), col="white", border="black", lwd=2, main = "Histogramme du nombre de collaborations par cours",
-xlim = c(0, 600), xlab = "Nombre de collaboration par cours",
+to=6000, by=300), col="white", border="black", lwd=2, main = "Histogramme du nombre de collaborations par cours",
+xlim = c(0, 6000), xlab = "Nombre de collaboration par cours",
 ylab = "Nombre d'étudiants")
 cols2 <- c("#EFEFEF", "#DEDEDE", "#CECECE", "#BEBEBE", "#AEAEAE", "#9E9E9E",
           "#8E8E8E", "#7E7E7E")
@@ -101,7 +104,11 @@ figure_directory <- gsub("/scripts", "/figure/",directory)
 reseau<-paste(figure_directory,"g",sep="")
 collab1<-paste(figure_directory,"h",sep="")
 collab2<-paste(figure_directory,"h2",sep="")
+
 png(filename = "g.png", width = 800, height = 600, units = "px", res = 300)
+plot(1:10,1:10)
+dev.off()
+
 png(filename = "h.png", width = 800, height = 600, units = "px", res = 300)
 png(filename = "h2.png", width = 800, height = 600, units = "px", res = 300)
 

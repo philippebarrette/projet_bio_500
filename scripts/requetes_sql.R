@@ -2,9 +2,9 @@ rsqliteVersion()
 con <- dbConnect(SQLite(), dbname="data_directory")
 tables <- dbListTables(con)
 print(tables)
-#for (table in tables) {
-#  dbSendQuery(con, paste0("DROP TABLE IF EXISTS ", table))
-#}
+for (table in tables) {
+ dbSendQuery(con, paste0("DROP TABLE IF EXISTS ", table))
+}
 bd_collaborations  <-read.csv(file=name_tbl_collaborations)
 bd_etudiants  <-read.csv(file=name_tbl_etudiants)
 bd_cours  <-read.csv(file=name_tbl_cours)

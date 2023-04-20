@@ -181,6 +181,7 @@ cours_ob <- c("BCL102","BCM104","BCM113","BCM115","BIO104","BIO108","BIO109"
 
 cours[cours$sigle=="ECL515","credits"]  <- 2
 cours[cours$sigle=="BIO109","credits"]  <- 1
+cours[cours$sigle=="INS154 ","sigle"]  <- "INS154"
 
                                   #AJOUTER ANNOTATION!!!
 liste_cours <- cours[,1]
