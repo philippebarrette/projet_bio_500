@@ -11,7 +11,7 @@ for(tab in tabNames){
   tabFiles <- allFiles[grep(tab, allFiles)]
     for(groupe in 1:nbGroupe){
     tabName <- paste0(tab, "_",groupe)
-        ficher <- paste0("D:/projet_bio_500/data/", tabFiles[groupe])
+        ficher <- paste0(data_directory, tabFiles[groupe])
         L <- readLines(ficher, n = 1)
     separateur <- ifelse(grepl(';', L), ';', ',')
     assign(tabName, read.csv(ficher, sep = separateur, stringsAsFactors = FALSE,encoding="UTF-8"))
@@ -181,6 +181,7 @@ cours_ob <- c("BCL102","BCM104","BCM113","BCM115","BIO104","BIO108","BIO109"
 
 cours[cours$sigle=="ECL515","credits"]  <- 2
 cours[cours$sigle=="BIO109","credits"]  <- 1
+cours[cours$sigle=="INS154 ","sigle"]  <- "INS154"
 
                                   #AJOUTER ANNOTATION!!!
 liste_cours <- cours[,1]

@@ -1,12 +1,12 @@
 render("mon_rmarkdown.Rmd")
 rmarkdown::render
-print(utils::getSrcdirectory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-Directory(function(){}))
+print(utils::getSrcDirectory(function(){}))
 print(utils::getSrcFilename(function(){}, full.names = TRUE))
+directory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 library(targets)
-source("analyse.R")
 source("figure.R")
+source("requetes_sql.R")
 tar_option_set(packages = c("MASS", "igraph"))
 list(
   tar_target(
