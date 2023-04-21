@@ -69,13 +69,13 @@ ORDER BY nombre_collaboration_cours;"
   nombre_collab_cours <- dbGetQuery(con, nb_collab_cours)
 }
 
-#création hist 1
+#crÃ©ation hist 1
 f_hist_collab <- function (requete_hist1){
 png(filename = paste0(figure_directory,"/Histogramme_de_collaboration_entre_etudiants.png", sep=""),width = 2000, height = 2000, units = "px", res = 300)
 rk_hist<-rank(nombre_liens_etudiants)
 h<-hist(nombre_liens_etudiants$nb_lien_par_etudiants,breaks = seq(from=0,
 to=200, by=20), col="white", border="black", lwd=2, main = "Histogramme des liens de collaboration",
-  xlim = c(0, 200), xlab = "Nombre de collaboration",ylim=c(0,180),ylab = "Nombre d'étudiants")
+  xlim = c(0, 200), xlab = "Nombre de collaboration",ylim=c(0,180),ylab = "Nombre d'Ã©tudiants")
 #rank_counts<-table(rk_hist)
 #for (i in unique(rk_hist)) {
 # text(i, rank_counts[i], labels=i, pos=3)
@@ -89,7 +89,7 @@ for (i in 1:length(h$counts)) {
   } 
 }
 
-#création hist 2
+#crÃ©ation hist 2
 f_hist_cours <- function (requete_hist2){
 png(filename = paste0(figure_directory,"/Histogramme_de_collaboration_par_cours.png", sep=""),width = 2000, height = 3000, units = "px", res = 300)
 nombre_collab_cours$sigle <- factor(nombre_collab_cours$sigle,levels = nombre_collab_cours$sigle[order(nombre_collab_cours$nombre_collaboration_cours)])
