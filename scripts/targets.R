@@ -5,10 +5,45 @@ print(utils::getSrcFilename(function(){}, full.names = TRUE))
 directory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 library(targets)
-source("figure.R")
-source("requetes_sql.R")
-tar_option_set(packages = c("MASS", "igraph"))
+install.packages('tarchetypes')
+library(tarchetypes)  # Utile pour render le rapport (tar_render)
+
+#Charger les fonctions à utiliser dans le target
+source("scripts/nettoyage_donnees.r")
+source("scripts/figure.R")
+source("scripts/requetes_sql.R")
+
+source("chemin vers le fichier avec les fonctions")
+
+
+tar_option_set(packages = c("RSQLite", "tidyverse","MASS", "igraph", "rmarkdown"))
 list(
+#Lecture des données
+  tar_target(tab_collaboration,read.csv("datatbl_collaborations.csv", sep=";"),priority = 0.6),
+  tar_target(tab_cours,read.csv("datatbl_cours.csv", sep=";"),priority = 0.6),
+  tar_target(tab_etudiants,read.csv("datatbl_etudiants.csv", sep=";"),priority = 0.6),
+  
+#Connection à SQL
+  tar_target(con,f_connect(),priority = 0.5),
+#Création des tables SQL
+  tar_target(tables,f_creation_table(con,tab_collaboration,tab_cours,tab_etudiants),priority = 0.2),
+#Requête SQL hist collab
+  tar_target(requete_hist1,f_requete1() ),
+#Création hist collab
+  tar_target(hist_collab,f_hist_collab(requete_hist1)),
+#Requête SQL hist cours
+  tar_target(requete_hist2,f_requete2()),   
+#Création hist cours
+  tar_target(hist_cours,f_hist_cours(requete_hist2)),
+#Création figure réseau de collab
+  tar_target(fig_reseau,f_reseau()),
+#Creation Markdown
+  tar_render(rapport,"rapport/rapport.Rmd", priority = 0)
+)
+
+
+#copier-coller du prof
+list(  
   tar_target(
     data, # Le nom de l'objet
     read.table("data.txt", header = T) # Lecture du fichier
