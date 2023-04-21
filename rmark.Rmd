@@ -28,21 +28,18 @@ La collaboration est une forme de travail où l'énergie est mise à profit à l
 
 #Introduction
 
-La collaboration est une forme d\'aide où plusieurs personnes mettent en œuvre ces compétences pour l\'atteinte d\'un but commun précis, et ce dans plusieurs sphères. En écologie, il a été démontré à plusieurs reprises que la collaboration à son lot d\'avantages concrets dans plusieurs sphères, soit dans le milieu animal, végétal et même chez l\'humain. La recherche en écologie, nécessite l\'apport de plusieurs connaissances adjacentes afin d\'obtenir des résultats plus fiables vu la complexité de la discipline (Goring et al., 2014). C\'est principalement cette interactions qui sera décortiquée dans le cadre du cours Méthodologie computationnelle donnés aux étudiants finissants au Baccalauréat en Écologie à l\'Université de Sherbrooke. En effet, une collecte de données à été réalisée afin d\'évaluer la collaboration de chacun des étudiants présents dans ce cours avec d\'autres élèves tout au long de leur cheminement académique. Le nombre total de collaboration pour chaque étudiant suit-elle une tendance particulière? Quels cours ont un plus nombre de collaborations? Et à quoi ressemble le réseau de collaboration au total sont des questions qui seront répondu dans ce présent rapport.
+La collaboration est une forme d'aide où plusieurs personnes mettent en œuvre ces compétences pour l'atteinte d'un but commun précis, et ce dans plusieurs sphères. En écologie, il a été démontré à plusieurs reprises que la collaboration à son lot d'avantages concrets dans plusieurs sphères, soit dans le milieu animal, végétal et même chez l'humain. La recherche en écologie, nécessite l'apport de plusieurs connaissances adjacentes afin d'obtenir des résultats plus fiables vu la complexité de la discipline (Goring et al., 2014). C'est principalement cette interactions qui sera décortiquée dans le cadre du cours Méthodologie computationnelle donnés aux étudiants finissants au Baccalauréat en Écologie à l'Université de Sherbrooke. En effet, une collecte de données à été réalisée afin d'évaluer la collaboration de chacun des étudiants présents dans ce cours avec d'autres élèves tout au long de leur cheminement académique. Le nombre total de collaboration pour chaque étudiant suit-elle une tendance particulière? Quels cours ont un plus nombre de collaborations? Et à quoi ressemble le réseau de collaboration au total sont des questions qui seront répondu dans ce présent rapport.
 
 #Methode et resultats
 
-En généralité, une collecte de données à été réalisée en sondant l\'entièreté des élèves présents dans le cours méthodes computationnelles au Baccalauréat en Écologie en hiver 2023. Différents fichiers ont dû être dûment remplis afin d\'éviter les oublis généralement réalisés par les étudiants. Ces fichiers avaient pour but de sonder les élèves à savoir les différentes informations sur l\'entièreté des cours suivis pour l\'obtention de leur diplome de premier cycle à l\'université, leurs informations personnels pour obtenir un historique de base des différents étudiants dans le cours et le dernier fichier avait pour but l\'énumération de l\'entièreté des collaborations que les étudiants ont eu à avoir pour les différents travaux réalisés dans les différents cours. 
+En généralité, une collecte de données à été réalisée en sondant l'entièreté des élèves présents dans le cours méthodes computationnelles au Baccalauréat en Écologie en hiver 2023. Différents fichiers ont dû être dûment remplis afin d'éviter les oublis généralement réalisés par les étudiants. Ces fichiers avaient pour but de sonder les élèves à savoir les différentes informations sur l'entièreté des cours suivis pour l'obtention de leur diplome de premier cycle à l'université, leurs informations personnels pour obtenir un historique de base des différents étudiants dans le cours et le dernier fichier avait pour but l'énumération de l'entièreté des collaborations que les étudiants ont eu à avoir pour les différents travaux réalisés dans les différents cours. 
 
-Ces trois fichiers ont dû être examinés en profondeur afin d\'éliminer toutes les incohérences, les erreurs de typographie, les doublons et les autres erreurs présentes. 
+Ces trois fichiers ont dû être examinés en profondeur afin d'éliminer toutes les incohérences, les erreurs de typographie, les doublons et les autres erreurs présentes. 
 
 #Figure du reseau de collab
 
-![Reseau de collaboration](figures/Reseau_de_collaboration.png)
-#Figure 1 
+![Reseau de collaboration](figures/Reseau_de_collaboration.png) #Figure 1
 
 ![Histogramme1](figures/Histogramme_de_collaboration_entre_etudiants.png)
 
-#Figure 2
-![Histogramme2](figures/Histogramme_de_collaboration_par_cours.png)
-
+#Figure 2 ![Histogramme2](figures/Histogramme_de_collaboration_par_cours.png)
