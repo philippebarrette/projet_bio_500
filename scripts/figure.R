@@ -101,15 +101,17 @@ dev.off()
 ## HISTOGRAMME DU NB DE COLLAB POUR CHAQUE COURS
 png(filename = paste0(figure_directory,
 "/Histogramme_de_collaboration_par_cours.png", sep=""), 
-width = 8000, height = 8000, units = "px", res = 300)
-nombre_collab_cours$sigle <- factor(nombre_collab_cours$sigle, levels = nombre_collab_cours$sigle[order(nombre_collab_cours$nombre_collaboration_cours)])
+width = 2000, height = 3000, units = "px", res = 300)
+nombre_collab_cours$sigle <- factor(nombre_collab_cours$sigle,
+levels = nombre_collab_cours$sigle[order(nombre_collab_cours$nombre_collaboration_cours)])
 hist <- ggplot(nombre_collab_cours, aes(x = nombre_collaboration_cours, y = sigle)) +
   geom_bar(stat = "identity", fill = "steelblue") +
   xlab("Nombre de collaborations") +
   ylab("Sigle") +
   ggtitle("Histogramme du nombre de collaborations par cours") +
   theme(plot.title = element_text(hjust = 0.5)) +
-  theme(axis.text.y = element_text(margin = margin(r = 10)),
-        vjust = 0.5)
+  theme(axis.text.y = element_text(margin = margin(r = 10)))+
+  geom_text(aes(label = nombre_collaboration_cours), hjust = -0.2, size = 2)
+print(hist)
 dev.off()
 
