@@ -38,7 +38,8 @@ adj_matrice <-compter_collaborations_matrice(collaboration)
 #rm(resultat_collaboration_matrice)
 
 ## FIGURE DU RESEAU DE COLLABORATION
-png(filename = paste0(figure_directory,"/Reseau_de_collaboration.png", sep=""), width = 2000, height = 2000, units = "px", res = 300000)
+png(filename = paste0(figure_directory,"/Reseau_de_collaboration.png",
+    sep=""), width = 8000, height = 8000, units = "px", res = 300)
 g <- graph.adjacency(adj_matrice, mode = "undirected")
 rk <- rank(deg)
 deg <- degree(g)
@@ -76,11 +77,13 @@ distances(g)
 eigen_centrality<- eigen_centrality(g)$vector
 
 ## HISTOGRAMME DU NOMBRE DE COLLAB POUR CHAQUE ETUDIANT
-png(filename = paste0(figure_directory,"/Histogramme_de_collaboration_entre_etudiants.png", sep=""), width = 2000, height = 2000, units = "px", res = 300000)
+png(filename = paste0(figure_directory,
+"/Histogramme_de_collaboration_entre_etudiants.png", sep=""),
+width = 4000, height = 3000, units = "px", res = 300)
 rk_hist<-rank(nombre_liens_etudiants)
 h<-hist(nombre_liens_etudiants$nb_lien_par_etudiants,breaks = seq(from=0,
 to=200, by=20), col="white", border="black", lwd=2, main = "Histogramme des liens de collaboration",
-xlim = c(0, 200), xlab = "Nombre de collaboration",ylim=c(0,120),
+xlim = c(0, 200), xlab = "Nombre de collaboration",ylim=c(0,180),
 ylab = "Nombre d'étudiants")
 #rank_counts<-table(rk_hist)
 #for (i in unique(rk_hist)) {
@@ -96,7 +99,9 @@ for (i in 1:length(h$counts)) {
 dev.off()
 
 ## HISTOGRAMME DU NB DE COLLAB POUR CHAQUE COURS
-png(filename = paste0(figure_directory,"/Histogramme_de_collaboration_par_cours.png", sep=""), width = 2000, height = 2000, units = "px", res = 300000)
+png(filename = paste0(figure_directory,"
+/Histogramme_de_collaboration_par_cours.png", sep=""), 
+width = 8000, height = 80000, units = "px", res = 300)
 nombre_collab_cours$sigle <- factor(nombre_collab_cours$sigle, levels = nombre_collab_cours$sigle[order(nombre_collab_cours$nombre_collaboration_cours)])
 hist <- ggplot(nombre_collab_cours, aes(x = nombre_collaboration_cours, y = sigle)) +
   geom_bar(stat = "identity", fill = "steelblue") +
