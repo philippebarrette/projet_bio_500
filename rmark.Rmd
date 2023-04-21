@@ -38,14 +38,11 @@ Ces trois fichiers ont dû être examinés en profondeur afin d\'éliminer toute
 
 #Figure du reseau de collab
 
-![Histogramme1](projet_bio_500/Rplot.png)
+![Reseau de collaboration](figures/Reseau_de_collaboration.png)
 #Figure 1 
 
 ![Histogramme1](figures/Histogramme_de_collaboration_entre_etudiants.png)
 
 #Figure 2
-![Histogramme1](figures/Histogramme_de_collaboration_par_cours.png)
-```{r histogramme, echo=FALSE, out.width = '100%'}
-knitr::include_graphics("figures/Histogramme_de_collaboration_par_cours.png", error = FALSE)
-```
+![Histogramme2](figures/Histogramme_de_collaboration_par_cours.png)
 
