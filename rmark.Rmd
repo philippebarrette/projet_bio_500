@@ -22,10 +22,6 @@ date: "2023-04-20"
 output: html_document
 ---
 
-```{r histogramme, echo=FALSE, out.width = '100%'}
-knitr::include_graphics("figures/Histogramme_de_collaboration_par_cours.png", error = FALSE)
-```
-
 #Resume
 
 La collaboration est une forme de travail où l'énergie est mise à profit à l'aide de plusieurs personnes permettant l'atteinte d'un but commun qui sera favorable pour tous. C'est cette forme de travail qui sera décortiquée dans ce travail à l'aide des différentes collaborations que les élèves en Baccalauréat en Écologie de l'Université de Sherbrooke dans le cadre du cours BIO500 ont eu à avoir tout au long de leur cheminement. Ce travail vise à comprendre à quoi ressemble le réseau de collaboration, combien de collaborations que chacun des étudiants ont dû avoir pour l'obtention de leur diplôme et suit-elle une tendance quelconque et finalement quel cours possède le plus grand nombre de collaborations recensées. Il a été démontré à l'aide des données obtenues que..
@@ -49,4 +45,7 @@ Ces trois fichiers ont dû être examinés en profondeur afin d\'éliminer toute
 
 #Figure 2
 ![Histogramme1](figures/Histogramme_de_collaboration_par_cours.png)
+```{r histogramme, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("figures/Histogramme_de_collaboration_par_cours.png", error = FALSE)
+```
 
