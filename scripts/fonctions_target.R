@@ -103,4 +103,77 @@ nombre_collab_cours$sigle <- factor(nombre_collab_cours$sigle,levels = nombre_co
     geom_text(aes(label = nombre_collaboration_cours), hjust = -0.2, size = 2)
 }
 
+#creation figure reseau de collab
+f_reseau <- function (){
+  compter_collaborations_matrice <- function(collaboration) {
+    etudiants_unique = unique((c(collaboration[,1],collaboration[,2])))
+    n_personnes <- length(etudiants_unique)
+    resultat_collaboration_matrice <- matrix(0, nrow = n_personnes, ncol = n_personnes,
+                                             dimnames = list(etudiants_unique, etudiants_unique))
+    for (i in 1:n_personnes){
+      print(etudiants_unique[i])
+      for (j in 1:nrow(collaboration)) {
+        #print(collaboration[j,1:10])
+        #print(collaboration[j,2:10])
+        if (etudiants_unique[i] == collaboration[j,1]){
+          for (k in 1:n_personnes){
+            if (collaboration[j,2] == etudiants_unique[k]){
+              break
+            }
+          }
+          resultat_collaboration_matrice[i, k] <- resultat_collaboration_matrice[i, k] + 1
+        }
+        
+        if (etudiants_unique[i] == collaboration[j,2]){
+          for (k in 1:n_personnes){
+            if (collaboration[j,1] == etudiants_unique[k]){
+              break
+            }
+          }
+          resultat_collaboration_matrice[i, k] <- resultat_collaboration_matrice[i, k] + 1
+        }
+      }
+      if (sum(is.na(resultat_collaboration_matrice)) > 0) {
+        warning("NA values found in the collaboration matrix.")
+      }
+    }
+    return(resultat_collaboration_matrice)
+    print(unique(diag(adj_matrice)))
+  }
+  adj_matrice <-compter_collaborations_matrice(collaboration)
+  #rm(resultat_collaboration_matrice)
+  
+  ## FIGURE DU RESEAU DE COLLABORATION
+  png(filename = paste0(figure_directory,"/Reseau_de_collaboration.png",
+                        sep=""), width = 8000, height = 8000, units = "px", res = 300)
+  g <- graph.adjacency(adj_matrice, mode = "undirected")
+  rk <- rank(deg)
+  deg <- degree(g)
+  min_size <- 5
+  size.vec <- deg / max(deg) * 15
+  threshold <- 3
+  size.vec[size.vec < threshold] <- size.vec[size.vec < threshold] * 8
+  col.vec <- hsv(seq(0, 1, length.out=length(rk)), 0.8, 0.8)[rk]
+  # set color attribute for each vertex based on its rank
+  for (i in 1:vcount(g)) {
+    V(g)$color[i] <- col.vec[i]
+    print(sprintf("Vertex %d, rank %s, color %s", i, rk[i], col.vec[i]))
+  }
+  E(g)$weight <-  rep(1, ecount(g))/100000*deg^0.01
+  #E(g)$weight <- rep(1, ecount(g)) / (deg^2)
+  layout <- layout_with_fr(g, weights=E(g)$weight, area=vcount(g)^2,niter=5000)
+  Reseau_de_collaboration<- tryCatch({
+    plot(g, layout=layout, vertex.label=NA, vertex.frame.color=NA, 
+         vertex.color = V(g)$color, vertex.size = size.vec, 
+         arrow.mode = 1, edge.arrow.size=0.5,
+         xlim=c(-1,1), ylim=c(-1,1))
+  }, error = function(e) {
+    cat("Error in plot:", conditionMessage(e), "\n")
+    if (exists("vr")) {
+      cat("Vertices causing the error:", which(is.na(vr)), "\n")
+    }
+  })
+  
+}
+
 
