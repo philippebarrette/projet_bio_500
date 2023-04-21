@@ -13,20 +13,19 @@ source("scripts/nettoyage_donnees.r")
 source("scripts/figure.R")
 source("scripts/requetes_sql.R")
 
-source("chemin vers le fichier avec les fonctions")
+source("scripts/fonctions_target.R")
 
 
 tar_option_set(packages = c("RSQLite", "tidyverse","MASS", "igraph", "rmarkdown"))
 list(
 #Lecture des données
-  tar_target(tab_collaboration,read.csv("datatbl_collaborations.csv", sep=";"),priority = 0.6),
-  tar_target(tab_cours,read.csv("datatbl_cours.csv", sep=";"),priority = 0.6),
-  tar_target(tab_etudiants,read.csv("datatbl_etudiants.csv", sep=";"),priority = 0.6),
-  
+  tar_target(tab_collaboration,read.csv("datatbl_collaborations.csv", sep=";")),
+  tar_target(tab_cours,read.csv("datatbl_cours.csv", sep=";")),
+  tar_target(tab_etudiants,read.csv("datatbl_etudiants.csv", sep=";")),
 #Connection à SQL
-  tar_target(con,f_connect(),priority = 0.5),
+  tar_target(con,f_connect()),
 #Création des tables SQL
-  tar_target(tables,f_creation_table(con,tab_collaboration,tab_cours,tab_etudiants),priority = 0.2),
+  tar_target(tables,f_creation_table(con,tab_collaboration,tab_cours,tab_etudiants)),
 #Requête SQL hist collab
   tar_target(requete_hist1,f_requete1() ),
 #Création hist collab
@@ -38,7 +37,7 @@ list(
 #Création figure réseau de collab
   tar_target(fig_reseau,f_reseau()),
 #Creation Markdown
-  tar_render(rapport,"rapport/rapport.Rmd", priority = 0)
+  tar_render(rapport,"rapport.Rmd")
 )
 
 
