@@ -44,10 +44,16 @@ dbSendQuery(con, tbl_collaborations)
 
 ## REQUETE qui donne le nombre de collaborations pour chaque étudiant
 nb_lien_etudiants <- "
-SELECT etudiant1,COUNT(*) AS nb_lien_par_etudiants
-FROM collaborations
-GROUP BY etudiant1
-ORDER BY nb_lien_par_etudiants;"
+SELECT etudiant, COUNT(*) AS nb_lien_par_etudiants
+FROM (
+    SELECT etudiant1 AS etudiant
+    FROM collaborations
+    UNION ALL
+    SELECT etudiant2 AS etudiant
+    FROM collaborations
+) AS temp
+GROUP BY etudiant
+ORDER BY nb_lien_par_etudiants DESC;"
 nombre_liens_etudiants <- dbGetQuery(con, nb_lien_etudiants)
 head(nombre_liens_etudiants)
 

@@ -14,9 +14,12 @@ library(rmarkdown)
 install.packages("targets")
 library(targets)
 
+install.packages("ggplot2")
+library(ggplot2)
+
 ##Package a utilisé pour écrire le rapport final 
-#install.packages('rticles')
-#library(rticles)
+install.packages('rticles')
+library(rticles)
 
 #GRPAHIQUE_STRUCTURE
 install.packages("igraph")
