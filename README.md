@@ -12,6 +12,6 @@
 
 #Nos requetes pour faire les figures se retrouvent dans le fichier 'requetes_sql.R' du dossier 'scripts'.
 
-#Le target du projet se trouve dans le fichier 'targets.R' du dossier 'scripts' et les fonctions utilisées pour le faire dans le fichier 'fonctions_target.R'.
+#Le target du projet se trouve dans le fichier '_targets.R' du dossier 'scripts' et les fonctions utilisées pour le faire dans le fichier 'fonctions_target.R'.
 
 #Nos questions de recherche se trouvent dans le dossier 'scripts' dans le fichier 'question_recherche'.
