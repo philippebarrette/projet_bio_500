@@ -1,22 +1,17 @@
 # projet_bio_500
 
-#Dans fichier data
+#Le dossier 'data' comprend les donn√©es sur les collaborations des √©tudiants du cours BIO500 tout au long de leur parcours scolaire des 10 √©quipes. Il comprend √©galement les tables donn√©es sur les √©tudiants et chaque cours pour lesquels il y a eu des collaborations appartenant aux 10 √©quipes qui ont √©t√© fusionn√©es 
 
-# Ce fichier comprend les donnÈes sur les collaborations des Ètudiants du cours BIO500 tout au long de leur parcours scolaire des 10 Èquipes. Il comprend Ègalement les tables donnÈes sur les Ètudiants et chaque cours pour lesquels il y a eu des collaborations appartenant aux 10 Èquipes qui ont ÈtÈ fusionnÈes 
+#Le dossier 'figures' contient les 3 figures du rapport en format .png. Ces figures ont √©t√© r√©alis√©s √† partir du fichier 'figure.R' contenu dans le dossier 'scripts'.
 
-#Dans Fichier script
+#Le dossier 'rapport' contient les fichiers pour g√©n√©rer le rapport, y compris le fichier .bib pour les r√©f√©rences.
 
-#Il y a Ègalement le script pour modifiÈ les erreurs dans ces bases de donnÈes ainsi que les indexations dans le fichier nettoyage_donnees.r 
-# Pour obtenir nos figures et produire le rapport, des packages ont du Ítre tÈlÈchargÈes et celles-ci se retrouvent dans le fichier Package_and_dependencies.R
-#Nos requetes pour faire les figures se retrouvent dans le fichier requetes_sql.r
-#Le code de nos targets se retrouvent dans le fichier target.r et les fonctions utlisÈes se retrouvent dans le fichier fonctions_target.r
-# Nos questions de recherche se retrouvent dans le fichier question_recherche
+#Le dossier 'scripts' contient tous nos scripts R, dont ceux pour fixer le directory 'directory_settings.R' et pour t√©l√©charger les packages pr√©alables pour notre code 'package_and_dependencies.R'.
 
-#Dans Fichier figure
+#La correction des erreurs de notre base de donn√©e se trouve dans le fichier 'nettoyage_donnees.r' du dossier 'scripts'.
 
-#les 3 figures rÈalisÈes se trouvent dans le fichier figure.R
+#Nos requetes pour faire les figures se retrouvent dans le fichier 'requetes_sql.R' du dossier 'scripts'.
 
+#Le target du projet se trouve dans le fichier 'targets.R' du dossier 'scripts' et les fonctions utilis√©es pour le faire dans le fichier 'fonctions_target.R'.
 
-#Dans fichier Rapport
-
-#Dans le dossier Rapport se retrouve le rapport.r, rapport.html ainsi que la table de rÈfÈrences utilisÈes 
+#Nos questions de recherche se trouvent dans le dossier 'scripts' dans le fichier 'question_recherche'.
