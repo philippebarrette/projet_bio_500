@@ -33,8 +33,6 @@ for (i in 1:nrow(collaboration_4)) {
 }
 collaboration <-collaboration[-c(which(collaboration$etudiant1==collaboration$etudiant2)),]
 
-
-
 #CORRECTION DES DONNÉES DES TABLES DE COURS
 cour_5 <-subset(cour_5[-c(28), ])
 cour_5 <- subset(cour_5,select=(-(4:9)))
@@ -355,16 +353,6 @@ collaboration$etudiant2 <- gsub('francis_bolly', 'francis_boily', collaboration$
 collaboration$etudiant2 <- gsub('sara-jade_lamontagne', 'sara_jade_lamontagne', collaboration$etudiant2)
 
                                             #a mettre dans un autre script
-##En post-traitement sur R :
-#Créer la base de données
-#Injecter les données
-#Faire les requêtes suivantes :
-## Nombre de liens par étudiant
-#Décompte de liens par paire d'étudiants
-#Enregistrer le résultat des requêtes dans un fichier csv
-#Calculer le nombre d'étudiants, le nombre de liens et la connectance du réseau
-#Calculer le nombre de liens moyens par étudiant et la variance
-#Écrire un script qui réalise les étapes 0-3 d'un bloc
 
 ###Enregistrer en CSV les tables corrigees
 #set
