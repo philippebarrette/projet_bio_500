@@ -65,4 +65,5 @@ GROUP BY sigle
 ORDER BY nombre_collaboration_cours;"
 nombre_collab_cours <- dbGetQuery(con, nb_collab_cours)
 head(nombre_collab_cours)
+nombre_collab_cours  <- nombre_collab_cours[-c(which(nombre_collab_cours$sigle=="")),]
 
