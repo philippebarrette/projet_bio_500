@@ -38,9 +38,8 @@ liste <-list(
 #Creation figure reseau de collab
   tar_target(fig_reseau,f_reseau()),
 #Creation Markdown
-  tar_render(rapport,paste0(rapport_directory,rapport.Rmd))
+  tar_render(rapport,"rapport.Rmd")
 )
-
 
 source("_targets.R")
 tar_glimpse()
