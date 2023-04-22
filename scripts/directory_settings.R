@@ -2,8 +2,9 @@
 print(utils::getSrcDirectory(function(){}))
 print(utils::getSrcFilename(function(){}, full.names = TRUE))
 directory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+print(directory)
 data_directory <- gsub("/scripts", "/data/",directory)
-
+print(data_directory)
 getwd()
 file.path()
 
