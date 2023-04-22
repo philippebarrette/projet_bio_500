@@ -1,0 +1,279 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Portrait des collaborations entre les etudiants du cours BIO500},
+  pdfkeywords={Collaborations, Reseau ecologique, Travaux d'equipe},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Portrait des collaborations entre les etudiants du cours BIO500}
+\author{true \and true \and true \and true}
+\date{2023-04-20}
+
+\begin{document}
+\maketitle
+
+\textbf{Resume}
+
+La collaboration est une forme de travail où l'énergie est mise à profit
+à l'aide de plusieurs personnes permettant l'atteinte d'un but commun
+qui sera favorable pour tous. C'est cette forme de travail qui sera
+décortiquée dans ce travail à l'aide des différentes collaborations que
+les élèves en Baccalauréat en écologie de l'Université de Sherbrooke
+dans le cadre du cours BIO500 ont eu à avoir tout au long de leur
+cheminement. Ce travail vise à comprendre à quoi ressemble le réseau de
+collaboration. Nous nous sommes intéressés à savoir si la distribution
+du nombre total de collaborations de chaque étudiant suivait une
+tendance particulière. De plus, nous avons regardé si certains cours
+possédaient un plus grand nombre (ou le contraire) de collaborations
+recensées. Il a été démontré à l'aide des données obtenues que plusieurs
+étudiants réalisent plus de collaborations que d'autres, mais la
+majorité s'en tiennent en bas de 50 collaborations au total.
+
+\textbf{Introduction}
+
+La collaboration est une forme d'aide où plusieurs personnes mettent en
+oeuvre ces compétences pour l'atteinte d'un but commun précis, et ce
+dans plusieurs sphères. En écologie, il a été démontré à plusieurs
+reprises que la collaboration à son lot d'avantages concrets dans
+plusieurs sphères soit dans le milieu animal, végétal et même chez
+l'humain. La recherche en écologie, nécessite l'apport de plusieurs
+connaissances adjacentes afin d'obtenir des résultats plus fiables vu la
+complexité de la discipline (Goring et al. 2014). C'est principalement
+cette interaction qui sera décortiquée dans le cadre du cours Méthodes
+en écologie computationnelle enseigné aux étudiants des différentes
+branches du baccalauréat en biologie de l'Université de Sherbrooke. En
+effet, une collecte de données a été réalisée afin d'évaluer la
+collaboration de chacun des étudiants présents dans ce cours avec
+d'autres élèves tout au long de leur cheminement académique. Les trois
+questions auxquelles notre équipe a décidé de s'attarder sont : est-ce
+que le nombre total de collaborations pour chaque étudiant suit une
+tendance particulière? Quels cours ont un plus nombre de collaborations?
+Et finalement, à quoi ressemble le réseau de collaboration total ?
+
+\textbf{Méthode et resultats}
+
+\textbf{Collecte de la base de données}
+
+En généralité, une collecte de données a été réalisée en sondant
+l'entièreté des élèves présents dans le cours méthodes computationnelles
+(BIO500) au Baccalauréat en écologie en hiver 2023. Chaque équipe devait
+dument remplir 3 fichiers Excel avec différentes informations sur les
+étudiants, les cours et les collaborations. Pour chaque étudiant
+(premier fichier), on s'intéressait à connaitre sa région
+administrative, sa présence ou non dans le régime coopératif, sa
+formation préalable, l'année de début de son baccalauréat et son
+programme d'étude. Pour chaque cours impliqué dans une collaboration
+entre étudiants (deuxième fichier), on voulait connaitre le sigle de ce
+cours, s'il était optionnel ou non et son nombre de crédits associé.
+Pour chaque collaboration entre deux étudiants (troisième fichier), on
+s'intéressait à connaitre le prénom et le nom de ces deux étudiants, le
+sigle du cours dans lequel ils ont collaboré et la session pendant
+laquelle cette collaboration a eu lieu. Ces fichiers Excel ont
+finalement été transformés en fichiers `.csv' .
+
+À l'aide du logiciel informatique R, nous avons compilé et fusionné tous
+les fichiers .csv de données récoltées de chaque équipe dans trois
+fichiers distincts, soit ``étudiants'', ``collaboration'' et ``cours''.
+Pour chacun de ces fichiers R, un nettoyage complet et en profondeur des
+données a été complété afin d'éliminer toutes les incohérences, les
+erreurs de typographie et les doublons qui ont été insérés par
+inattention lors de la saisie des informations par les différentes
+équipes. Ce nettoyage avait pour objectif de rendre les bases de données
+uniformes pour pouvoir s'en servir plus tard lors d'analyses.
+
+\includegraphics{images/Reseau_de_collaboration.png}
+
+Figure 1: Réseau des collaborations entre les différents étudiants du
+cours BIO500 au Baccaulauréat en écologie.
+
+Le but de cette figure 1 était de représenter le réseau de collaboration
+des étudiants. Les différents noeuds représentent l'ensemble des
+étudiants en plusieurs couleurs. Plus le noeud illustré est grand, plus
+cet étudiant a réalisé un grand nombre de collaborations durant tout le
+cheminement de ses études. Les lignes représentent chaque collaboration
+entre ces étudiants. La couleur des points a été attribuée selon le
+nombre de collaborations, soit bleu foncé pour plus de collaborations et
+orange brulée pour un étudiant qui a eu le moins de collaborations. Ces
+attributions de couleurs sont générées à l'aide de rangs préalablement
+classée par le nombre de collaborations total additionné.
+
+\hfill\break
+\includegraphics{images/Histogramme_de_collaboration_par_cours.png}Figure
+2 : Histogramme du nombre de collaborations selon les différents cours
+présents dans le cheminement du Baccalauréat en écologie.
+
+Le but de la deuxième figure était de représenter le nombre total de
+collaborations pour chaque étudiant. Nous avons fait une requête SQL qui
+nous a permis de créer un data.frame avec le nom et prénom de chacun des
+étudiants impliqués dans le réseau. La première colonne recueille
+l'ensemble des cours au Baccalauréat et le nombre de collaborations qui
+ont été faites. À partir de cette requête, un histogramme a été
+construit à partir de la fonction hist() et cette figure a été
+sauvegardée dans un fichier `.png'. La Figure 2 permet de répondre à la
+question suivante: quels cours ont un plus nombre de collaborations?
+Parmi les différents cours qui comportent des collaborations, TSB303 est
+celui qui possède le plus grand nombre avec un recensement de 579
+collaborations. Par la suite, BCM104 en compte 383, ZOO304 en compte
+224, ECL527 en compte 214 et ainsi de suite.
+
+\includegraphics{images/Histogramme_de_collaboration_entre_etudiants.png}\includegraphics{}Figure
+3: Histogramme des liens de collaboration répartit selon le nombre
+d'étudiants.
+
+Le but de la troisième figure était de représenter le nombre total de
+collaborations de l'ensemble des étudiants pour chaque cours. Nous avons
+fait une requête SQL qui nous a permis de créer un data.frame avec le
+sigle des cours dans la première colonne et le nombre de collaborations
+qui a été effectué pour chacun dans la deuxième colonne. À partir de
+cette requête, un histogramme a été construit avec la fonction hist() et
+cette figure a été sauvegardée dans un fichier `.png'. La figure 3 nous
+aide à répondre à la question suivante: est-ce que le nombre total de
+collaborations pour chaque étudiant suit une tendance particulière? La
+majorité des étudiants se retrouvent dans la première classe, soit entre
+0 et 50 collaborations pour un nombre d'étudiants totalisant une somme
+plus grand que 100. Donc, il est possible de comprendre que la majorité
+des étudiants a réalisée un nombre inférieur à 50 collaborations sur
+l'entièreté de leur cheminement scolaire.
+
+\textbf{Discussion}
+
+En se basant sur la Figure 1 du réseau de collaboration, on remarque que
+les étudiants ont tendance à préserver les mêmes collaborateurs tout au
+long de leur parcours universitaire. En effet, en prenant en compte que
+ce sont un total de 156 étudiants qui font partie de la base de données,
+seulement moins de 10 étudiants ont plus de 150 collaborations. D'après
+(Cullen et al. 1999), il est souhaitable de faire diverses
+collaborations, puisque ces collaborateurs peuvent en tirer des
+avantages scientifiques puisqu'elles mettent à profit les forces de
+chaque individu. Par la suite, selon la Figure 2, les deux cours ayant
+le plus de collaborations sont TSB303 et BCM104, deux cours obligatoires
+pour obtenir son diplôme dans une branche de la biologie, soit
+l'écologie. Ces 2 cours se dissocient de la courbe obtenue avec les
+autres cours du baccalauréat par le haut nombre de collaborations
+comptabilisé. Ces interactions entre plusieurs individus auraient lieu
+lorsque les bénéfices du partenariat dépassent les couts engendrés, ce
+qui a probablement eu lieu pour ces 2 cours (Goring et al. 2014).
+Finalement, en ce qui concerne la question portant sur la tendance du
+nombre de collaborations par étudiant qui correspond à la Figure 3, on
+peut constater qu'uniquement très peu d'étudiants sur un total de 156
+étudiants font plus de 150 collaborations, ce qui représente une infirme
+partie de la majorité. Selon (REYERS et al. 2010), le domaine de
+l'écologie au niveau universitaire ainsi que les chercheurs en début de
+carrière se concentrent sur une seule discipline, diminuant le niveau de
+collaboration.
+
+\hypertarget{bibliographie}{%
+\section*{Bibliographie}\label{bibliographie}}
+\addcontentsline{toc}{section}{Bibliographie}
+
+\hfill\break
+
+\hfill\break
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-cullen1999}{}}%
+Cullen, Peter W., Richard H. Norris, Vincent H. Resh, Trefor B.
+Reynoldson, David M. Rosenberg, and Michael T. Barbour. 1999.
+{``Collaboration in Scientific Research: A Critical Need for Freshwater
+Ecology.''} \emph{Freshwater Biology} 42 (1): 131--42.
+\url{https://doi.org/10.1046/j.1365-2427.1999.00447.x}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-goring2014improving}{}}%
+Goring, Simon J, Kathleen C Weathers, Walter K Dodds, Patricia A
+Soranno, Lynn C Sweet, Kendra S Cheruvelil, John S Kominoski, Janine
+Rüegg, Alexandra M Thorn, and Ryan M Utz. 2014. {``Improving the Culture
+of Interdisciplinary Collaboration in Ecology by Expanding Measures of
+Success.''} \emph{Frontiers in Ecology and the Environment} 12 (1):
+39--47.
+
+\leavevmode\vadjust pre{\hypertarget{ref-reyers2010}{}}%
+REYERS, BELINDA, DIRK J. ROUX, RICHARD M. COWLING, AIMEE E. GINSBURG,
+JEANNE L. NEL, and PATRICK O'FARRELL. 2010. {``Conservation Planning as
+a Transdisciplinary Process.''} \emph{Conservation Biology} 24 (4):
+957--65. \url{https://doi.org/10.1111/j.1523-1739.2010.01497.x}.
+
+\end{CSLReferences}
+
+\end{document}
