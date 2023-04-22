@@ -17,7 +17,7 @@ source("fonctions_target.R")
 
 tar_option_set(packages = c("RSQLite", "tidyverse","MASS", "igraph", "rmarkdown",
                             "ggplot2", "rticles","igraph","RColorBrewer","viridis"))
-list(
+liste <-list(
 #Lecture des donnees
   tar_target(tab_collaboration,read.csv("datatbl_collaborations.csv", sep=";")),
   tar_target(tab_cours,read.csv("datatbl_cours.csv", sep=";")),
