@@ -4,6 +4,7 @@ rmarkdown::render
 print(utils::getSrcDirectory(function(){}))
 print(utils::getSrcFilename(function(){}, full.names = TRUE))
 directory <- setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+rapport_directory <- gsub("/scripts", "/rapport/",directory)
 
 library(targets)
 install.packages('tarchetypes')
@@ -37,7 +38,7 @@ liste <-list(
 #Creation figure reseau de collab
   tar_target(fig_reseau,f_reseau()),
 #Creation Markdown
-  tar_render(rapport,"rapport.Rmd")
+  tar_render(rapport,paste0(rapport_directory,rapport.Rmd))
 )
 
 
