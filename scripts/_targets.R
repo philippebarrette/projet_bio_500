@@ -18,23 +18,23 @@ source("fonctions_target.R")
 tar_option_set(packages = c("RSQLite", "tidyverse","MASS", "igraph", "rmarkdown",
                             "ggplot2", "rticles","igraph","RColorBrewer","viridis"))
 list(
-#Lecture des données
+#Lecture des donnÃ©es
   tar_target(tab_collaboration,read.csv("datatbl_collaborations.csv", sep=";")),
   tar_target(tab_cours,read.csv("datatbl_cours.csv", sep=";")),
   tar_target(tab_etudiants,read.csv("datatbl_etudiants.csv", sep=";")),
-#Connection à SQL
+#Connection Ã  SQL
   tar_target(con,f_connect()),
-#Création des tables SQL
+#CrÃ©ation des tables SQL
   tar_target(tables,f_creation_table(con,tab_collaboration,tab_cours,tab_etudiants)),
-#Requête SQL hist collab
+#RequÃªte SQL hist collab
   tar_target(requete_hist1,f_requete1() ),
-#Création hist collab
+#CrÃ©ation hist collab
   tar_target(hist_collab,f_hist_collab(requete_hist1)),
-#Requête SQL hist cours
+#RequÃªte SQL hist cours
   tar_target(requete_hist2,f_requete2()),   
-#Création hist cours
+#CrÃ©ation hist cours
   tar_target(hist_cours,f_hist_cours(requete_hist2)),
-#Création figure réseau de collab
+#CrÃ©ation figure rÃ©seau de collab
   tar_target(fig_reseau,f_reseau())
 )
 
