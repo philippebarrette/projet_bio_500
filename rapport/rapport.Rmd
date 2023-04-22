@@ -27,7 +27,7 @@ La collaboration est une forme de travail où l'énergie est mise à profit à l
 
 **Introduction**
 
-La collaboration est une forme d'aide où plusieurs personnes mettent en oeuvre ces compétences pour l'atteinte d'un but commun précis, et ce dans plusieurs sphères. En écologie, il a été démontré à plusieurs reprises que la collaboration à son lot d'avantages concrets dans plusieurs sphères soit dans le milieu animal, végétal et même chez l'humain. La recherche en écologie, nécessite l'apport de plusieurs connaissances adjacentes afin d'obtenir des résultats plus fiables vu la complexité de la discipline [@goring2014]. C'est principalement cette interaction qui sera décortiquée dans le cadre du cours Méthodes en écologie computationnelle enseigné aux étudiants des différentes branches du baccalauréat en biologie de l'Université de Sherbrooke. En effet, une collecte de données a été réalisée afin d'évaluer la collaboration de chacun des étudiants présents dans ce cours avec d'autres élèves tout au long de leur cheminement académique. Les trois questions auxquelles notre équipe a décidé de s'attarder sont : est-ce que le nombre total de collaborations pour chaque étudiant suit une tendance particulière? Quels cours ont un plus nombre de collaborations? Et finalement, à quoi ressemble le réseau de collaboration total ?
+La collaboration est une forme d'aide où plusieurs personnes mettent en oeuvre ces compétences pour l'atteinte d'un but commun précis, et ce dans plusieurs sphères. En écologie, il a été démontré à plusieurs reprises que la collaboration à son lot d'avantages concrets dans plusieurs sphères soit dans le milieu animal, végétal et même chez l'humain. La recherche en écologie, nécessite l'apport de plusieurs connaissances adjacentes afin d'obtenir des résultats plus fiables vu la complexité de la discipline @goring2014. C'est principalement cette interaction qui sera décortiquée dans le cadre du cours Méthodes en écologie computationnelle enseigné aux étudiants des différentes branches du baccalauréat en biologie de l'Université de Sherbrooke. En effet, une collecte de données a été réalisée afin d'évaluer la collaboration de chacun des étudiants présents dans ce cours avec d'autres élèves tout au long de leur cheminement académique. Les trois questions auxquelles notre équipe a décidé de s'attarder sont : est-ce que le nombre total de collaborations pour chaque étudiant suit une tendance particulière? Quels cours ont un plus nombre de collaborations? Et finalement, à quoi ressemble le réseau de collaboration total ?
 
 **Méthode et resultats**
 
@@ -37,16 +37,16 @@ En généralité, une collecte de données a été réalisée en sondant l'enti�
 
 À l'aide du logiciel informatique R, nous avons compilé et fusionné tous les fichiers .csv de données récoltées de chaque équipe dans trois fichiers distincts, soit "étudiants", "collaboration" et "cours". Pour chacun de ces fichiers R, un nettoyage complet et en profondeur des données a été complété afin d'éliminer toutes les incohérences, les erreurs de typographie et les doublons qui ont été insérés par inattention lors de la saisie des informations par les différentes équipes. Ce nettoyage avait pour objectif de rendre les bases de données uniformes pour pouvoir s'en servir plus tard lors d'analyses.Â 
 
-![Reseau de collaboration](figures/Reseau_de_collaboration.png) Figure 1: Réseau des collaborations entre les différents étudiants du cours BIO500 au Baccaulauréat en écologie.
+![Reseau de collaboration](images/Reseau_de_collaboration.png) Figure 1: Réseau des collaborations entre les différents étudiants du cours BIO500 au Baccaulauréat en écologie.
 
 Le but de cette figureÂ 1 était de représenter le réseau de collaboration des étudiants. Les différents noeuds représentent l'ensemble des étudiants en plusieurs couleurs. Plus le noeud illustré est grand, plus cet étudiant a réalisé un grand nombre de collaborations durant tout le cheminement de ses études. Les lignes représentent chaque collaboration entre ces étudiants. La couleur des points a été attribuée selon le nombre de collaborations, soit bleu foncé pour plus de collaborations et orange brulée pour un étudiant qui a eu le moins de collaborations. Ces attributions de couleurs sont générées à l'aide de rangs préalablement classée par le nombre de collaborations total additionné.
 
 \
-![Histogramme2](figures/Histogramme_de_collaboration_par_cours.png)Figure 2 : Histogramme du nombre de collaborations selon les différents cours présents dans le cheminement du Baccalauréat en écologie.
+![Histogramme2](images/Histogramme_de_collaboration_par_cours.png)Figure 2 : Histogramme du nombre de collaborations selon les différents cours présents dans le cheminement du Baccalauréat en écologie.
 
 Le but de la deuxième figure était de représenter le nombre total de collaborations pour chaque étudiant. Nous avons fait une requête SQL qui nous a permis de créer un data.frame avec le nom et prénom de chacun des étudiants impliqués dans le réseau. La première colonne recueille l'ensemble des cours au Baccalauréat et le nombre de collaborations qui ont été faites. À partir de cette requête, un histogramme a été construit à partir de la fonction hist() et cette figure a été sauvegardée dans un fichier '.png'. La Figure 2 permet de répondre à la question suivante: quels cours ont un plus nombre de collaborations? Parmi les différents cours qui comportent des collaborations, TSB303 est celui qui possède le plus grand nombre avec un recensement de 579 collaborations. Par la suite, BCM104 en compte 383, ZOO304 en compte 224, ECL527 en compte 214 et ainsi de suite.
 
-![Histogramme1](figures/Histogramme_de_collaboration_entre_etudiants.png)Figure 3: Histogramme des liens de collaboration répartit selon le nombre d'étudiants.
+![Histogramme1](images/Histogramme_de_collaboration_entre_etudiants.png)Figure 3: Histogramme des liens de collaboration répartit selon le nombre d'étudiants.
 
 Le but de la troisième figure était de représenter le nombre total de collaborations de l'ensemble des étudiants pour chaque cours. Nous avons fait une requête SQL qui nous a permis de créer un data.frame avec le sigle des cours dans la première colonne et le nombre de collaborations qui a été effectué pour chacun dans la deuxième colonne. À partir de cette requête, un histogramme a été construit avec la fonction hist() et cette figure a été sauvegardée dans un fichier '.png'. La figure 3 nous aide à répondre à la question suivante: est-ce que le nombre total de collaborations pour chaque étudiant suit une tendance particulière? La majorité des étudiants se retrouvent dans la première classe, soit entre 0 et 50 collaborations pour un nombre d'étudiants totalisant une somme plus grand que 100. Donc, il est possible de comprendre que la majorité des étudiants a réalisée un nombre inférieur à 50 collaborations sur l'entièreté de leur cheminement scolaire.
 
@@ -54,36 +54,6 @@ Le but de la troisième figure était de représenter le nombre total de collabo
 
 En se basant sur la Figure 1 du réseau de collaboration, on remarque que les étudiants ont tendance à préserver les mêmes collaborateurs tout au long de leur parcours universitaire. En effet, en prenant en compte que ce sont un total de 156 étudiants qui font partie de la base de données, seulement moins de 10 étudiants ont plus de 150 collaborations. D'après [@cullen1999], il est souhaitable de faire diverses collaborations, puisque ces collaborateurs peuvent en tirer des avantages scientifiques puisqu'elles mettent à profit les forces de chaque individu. Par la suite, selon la Figure 2, les deux cours ayant le plus de collaborations sont TSB303 et BCM104, deux cours obligatoires pour obtenir son diplôme dans une branche de la biologie, soit l'écologie. Ces 2 cours se dissocient de la courbe obtenue avec les autres cours du baccalauréat par le haut nombre de collaborations comptabilisé. Ces interactions entre plusieurs individus auraient lieu lorsque les bénéfices du partenariat dépassent les couts engendrés, ce qui a probablement eu lieu pour ces 2 cours [@goring2014]. Finalement, en ce qui concerne la question portant sur la tendance du nombre de collaborations par étudiant qui correspond à la Figure 3, on peut constater qu'uniquement très peu d'étudiants sur un total de 156 étudiants font plus de 150 collaborations, ce qui représente une infirme partie de la majorité. Selon [@reyers2010], le domaine de l'écologie au niveau universitaire ainsi que les chercheurs en début de carrière se concentrent sur une seule discipline, diminuant le niveau de collaboration.
 
-**Liste de références**
+**Bibliographie**
 
-@tozer2021
-
-\@article{Goring2014,
-
-author = {Goring, S. J. and Weathers, K. C. and Dodds, W. K. and Soranno, P. A. and Sweet, L. C. and Cheruvelil, K. S. and Kominoski, J. S. and RuÌegg, J. and Thorn, A. M. and Utz, R. M.},
-
-title = {Improving the culture of interdisciplinary collaboration in ecology by expanding measures of success},
-
-journal = {Frontiers in Ecology and the Environment},
-
-year = {2014},
-
-volume = {12},
-
-number = {1},
-
-pages = {39--47}
-
-}
-
-[@goring2014]
-
-@cullen1999
-
-@reyers2010
-
-@perez2018
-
-\
-
-\
+Goring, S. J., Weathers, K. C., Dodds, W. K., Soranno, P. A., Sweet, L. C., Cheruvelil, K. S., Kominoski, J. S., Rüegg Janine, Thorn, A. M., & Utz, R. M. (2014). Improving the culture of interdisciplinary collaboration in ecology by expanding measures of success. Frontiers in Ecology and the Environment, 12(1), 39--47.
