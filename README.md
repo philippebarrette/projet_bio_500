@@ -8,3 +8,4 @@
 #Le code de nos targets se retrouvent dans le fichier target.r et les fonctions utlisées se retrouvent dans le fichier fonctions_target.r
 # Nos questions de recherche se retrouvent dans le fichier question_recherche
 #les 3 figures réalisées se trouvent dans le fichier figure.R
+#Dans le dossier Rapport se retrouve le rapport.rmd et rapport.html
